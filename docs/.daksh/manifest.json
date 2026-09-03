@@ -95,7 +95,7 @@
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\vision.md": "14176784a1378556f711cff28a98f668818974215f4b096f9cdd8ab28cfcb5b5"
+        "docs\\vision.md": "c8b35b52f4504623d557c2968f1ea88ff6268822fb03cf52c7504bf528b05e27"
       },
       "approvals": [
         {
@@ -104,6 +104,14 @@
           "date": "2026-09-03",
           "doc_hash": {
             "docs\\vision.md": "14176784a1378556f711cff28a98f668818974215f4b096f9cdd8ab28cfcb5b5"
+          }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\vision.md": "c8b35b52f4504623d557c2968f1ea88ff6268822fb03cf52c7504bf528b05e27"
           }
         }
       ],
@@ -115,19 +123,34 @@
         {
           "date": "2026-09-03",
           "note": "Resolved all 9 open questions into Decisions (decision-15..23) after a follow-up Q&A round: account model, cancellation window, notifications, catalog structure, tax, agent onboarding, language, admin access, mid-delivery reassignment. Short hash: tenH976IpK."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Percolated change (no module exists yet, so /daksh change's module-scoped script doesn't apply per its documented boundary gap \u00ef\u00bf\u00bd hand-percolated instead): decision-15 revised from phone+SMS-OTP to email+OTP for End User login, on cost grounds; phone number retained as a plain checkout field for delivery-agent contact only. Raised by Bhargav during /daksh brd intake. Short hash: l7dzj2fsDz."
         }
       ]
     },
     "20": {
-      "status": "not_started",
+      "status": "in_progress",
       "mode": "greenfield",
       "doc_type": "business-requirements",
       "output": "docs/business-requirements.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
+      "doc_hash": {
+        "docs\\business-requirements.md": "94ab13d4aca0e12f1ef0efaeb19bfd363afe1b9112b7a606ab65f88373f47bd0"
+      },
       "approvals": [],
-      "revision_history": []
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "First-author: BRD drafted from vision.md \u00ef\u00bf\u00bd 11 use cases, 28 FRs each tracing to one UC, 28 matching ACs, 5 NFRs, core data model, and a new domain-glossary.md locking the canonical order-status vocabulary. 6 open questions for stage 30. Short hash: w0k9wfHA32."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved all 6 open questions into Decisions (decision-27..32) after a follow-up Q&A round: agent auth (email+OTP), OTP timing (10min/60s), admin password reset, multi-address support, server-side cart persistence, no order-size cap. Data model extended with AdminAccount, Cart, CartLine. Short hash: ZFjhr8U6DX."
+        }
+      ]
     },
     "30a": {
       "status": "not_started",
