@@ -131,16 +131,25 @@
       ]
     },
     "20": {
-      "status": "in_progress",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "business-requirements",
       "output": "docs/business-requirements.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\business-requirements.md": "94ab13d4aca0e12f1ef0efaeb19bfd363afe1b9112b7a606ab65f88373f47bd0"
+        "docs\\business-requirements.md": "55e139ed82a6304d18f55edbb7c8b8f873bc4a90828d5909c2d34ec0af9d3ae4"
       },
-      "approvals": [],
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\business-requirements.md": "55e139ed82a6304d18f55edbb7c8b8f873bc4a90828d5909c2d34ec0af9d3ae4"
+          }
+        }
+      ],
       "revision_history": [
         {
           "date": "2026-09-03",
