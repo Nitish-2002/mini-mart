@@ -134,7 +134,7 @@
       ]
     },
     "20": {
-      "status": "approved",
+      "status": "pending_approval",
       "mode": "greenfield",
       "doc_type": "business-requirements",
       "output": "docs/business-requirements.md",
@@ -465,8 +465,32 @@
     }
   },
   "contracts": {},
-  "traceability": {},
-  "change_records": {},
+  "traceability": {
+    "TASK-AUTH-001": {
+      "parent": "CR-001",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "status": "todo"
+    }
+  },
+  "change_records": {
+    "CR-001": {
+      "module": "AUTH",
+      "path": "docs\\implementation\\AUTH\\change-records\\CR-001.md",
+      "status": "OPEN",
+      "raised_by": "Bhargav",
+      "date": "2026-09-03",
+      "tier": "brd",
+      "touched_docs": [
+        "docs/business-requirements.md",
+        "docs/domain-glossary.md"
+      ],
+      "change_task": "TASK-AUTH-001",
+      "change_summary": "Add deactivated status for previously-approved Delivery Agents",
+      "approvals": []
+    }
+  },
   "risk_register": [
     {
       "risk_id": "RISK-001",
