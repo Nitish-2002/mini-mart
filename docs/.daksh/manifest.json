@@ -88,15 +88,35 @@
       ]
     },
     "10": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "vision",
       "output": "docs/vision.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\vision.md": "14176784a1378556f711cff28a98f668818974215f4b096f9cdd8ab28cfcb5b5"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\vision.md": "14176784a1378556f711cff28a98f668818974215f4b096f9cdd8ab28cfcb5b5"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "First-author: Vision drafted from stage 00 Discovery Context plus 2 follow-up questions (out-of-scope confirmation, handoff definition). Adds the one-deep-module depth claim (decision-12/13/14) and 9 new open questions for BRD. Short hash: 1SU4FR5Rur."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved all 9 open questions into Decisions (decision-15..23) after a follow-up Q&A round: account model, cancellation window, notifications, catalog structure, tax, agent onboarding, language, admin access, mid-delivery reassignment. Short hash: tenH976IpK."
+        }
+      ]
     },
     "20": {
       "status": "not_started",
