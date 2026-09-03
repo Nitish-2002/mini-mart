@@ -16,6 +16,12 @@
       "name": "Bhargav",
       "role": "PTL",
       "email": "bhargavballa074@gmail.com"
+    },
+    {
+      "name": "Bhargav (Client)",
+      "role": "Client",
+      "email": "bhargavballa074@gmail.com",
+      "note": "Same person as the PTL roster entry above, representing Mini Mart's own client/business-owner sign-off \u00e2\u20ac\u201d this project has no separate client stakeholder. Used only to give brd/roadmap-tier change records a genuine second-hat confirmation, not a rubber stamp by a different person."
     }
   ],
   "modules": [
@@ -482,7 +488,7 @@
     "CR-001": {
       "module": "AUTH",
       "path": "docs\\implementation\\AUTH\\change-records\\CR-001.md",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "raised_by": "Bhargav",
       "date": "2026-09-03",
       "tier": "brd",
@@ -496,6 +502,11 @@
         {
           "by": "Bhargav",
           "role": "PTL",
+          "date": "2026-09-03"
+        },
+        {
+          "by": "Bhargav (Client)",
+          "role": "Client",
           "date": "2026-09-03"
         }
       ]

@@ -48,3 +48,8 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-03
 Via:         CR-001
+
+Approved by: Bhargav (Client)
+Role:        Client
+Date:        2026-09-03
+Via:         CR-001
