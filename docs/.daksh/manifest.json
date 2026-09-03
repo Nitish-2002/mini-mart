@@ -140,14 +140,14 @@
       ]
     },
     "20": {
-      "status": "pending_approval",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "business-requirements",
       "output": "docs/business-requirements.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\business-requirements.md": "999ee460d59933c0873d8b8ecbbc06c04c999d565a5db33be8e8716024a8c2c9"
+        "docs\\business-requirements.md": "4afa6b23266977bb07b96cc299d5c1d413e217e8c04df56e99458f1644186762"
       },
       "approvals": [
         {
@@ -157,9 +157,31 @@
           "doc_hash": {
             "docs\\business-requirements.md": "55e139ed82a6304d18f55edbb7c8b8f873bc4a90828d5909c2d34ec0af9d3ae4"
           }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\business-requirements.md": "4afa6b23266977bb07b96cc299d5c1d413e217e8c04df56e99458f1644186762"
+          },
+          "via_cr": "CR-001"
+        },
+        {
+          "by": "Bhargav (Client)",
+          "role": "Client",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\business-requirements.md": "4afa6b23266977bb07b96cc299d5c1d413e217e8c04df56e99458f1644186762"
+          },
+          "via_cr": "CR-001"
         }
       ],
       "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "Manually restored status to approved after CR-001 resolved: approve.py's approve_cr() failed to auto-restore this stage because find_stage_for_doc() compares CR touched_docs (forward-slash, e.g. 'docs/business-requirements.md') against stage.output (also forward-slash) using str(Path(p)), which on Windows renders backslash -- same path-separator bug as elsewhere in this toolchain, this time inside CR resolution. Fixed doc_hash to the actual post-approval-block hash and added both PTL and Client approval entries by hand."
+        },
         {
           "date": "2026-09-03",
           "note": "First-author: BRD drafted from vision.md -- 11 use cases, 28 FRs each tracing to one UC, 28 matching ACs, 5 NFRs, core data model, and a new domain-glossary.md locking the canonical order-status vocabulary. 6 open questions for stage 30. Short hash: w0k9wfHA32."
