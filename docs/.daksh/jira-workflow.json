@@ -1,0 +1,43 @@
+{
+  "preset": "divami-engineering-jira-standard",
+  "story": {
+    "applies_to": ["Story", "Task", "Sub-task", "Spike"],
+    "statuses": [
+      "Start", "Open", "To Do", "Development in Progress", "On Hold",
+      "Dev Internal Review", "Ready for QA", "QA in Progress",
+      "Bug Raised", "Passed in QA", "Done"
+    ],
+    "done_statuses": ["Done"],
+    "transitions": {
+      "Start": ["Open", "Done"],
+      "Open": ["To Do"],
+      "To Do": ["Development in Progress"],
+      "Development in Progress": ["On Hold", "Dev Internal Review"],
+      "On Hold": ["To Do"],
+      "Dev Internal Review": ["Development in Progress", "Ready for QA"],
+      "Ready for QA": ["QA in Progress"],
+      "QA in Progress": ["Passed in QA", "Done", "Bug Raised"],
+      "Bug Raised": ["Ready for QA"],
+      "Passed in QA": ["Done"]
+    }
+  },
+  "bug": {
+    "applies_to": ["Bug"],
+    "statuses": [
+      "Open", "Development In Progress", "Not Reproducible", "Not A Bug",
+      "Ready For QA", "Reopen", "On Hold", "QA In Progress",
+      "Done - Not Reproducible", "Done - Not A Bug", "Done"
+    ],
+    "done_statuses": ["Done", "Done - Not Reproducible", "Done - Not A Bug"],
+    "transitions": {
+      "Open": ["Development In Progress"],
+      "Development In Progress": ["Not Reproducible", "Not A Bug", "Ready For QA"],
+      "Not Reproducible": ["Done - Not Reproducible", "Reopen"],
+      "Not A Bug": ["Done - Not A Bug", "Reopen"],
+      "Ready For QA": ["QA In Progress", "Reopen"],
+      "Reopen": ["On Hold"],
+      "On Hold": ["Open"],
+      "QA In Progress": ["Reopen", "Done"]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Handbook reading order — end-user first, then role-specific, then internals.
+order = [
+  "end-user.md",
+  "admin.md",
+  "ops.md",
+  "developer.md"
+]

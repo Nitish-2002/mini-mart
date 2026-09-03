@@ -1,0 +1,366 @@
+{
+  "project": "Mini Mart",
+  "description": "Retail/mart application covering inventory, billing, and user management",
+  "client": "Mini Mart",
+  "created": "2026-09-03",
+  "daksh_version": "0.6.1",
+  "rules": {
+    "approvals_per_gate": 1,
+    "open_questions": "mandatory",
+    "cross_module_contracts": true,
+    "jira_sync": "optional",
+    "tend_frequency": "per_sprint"
+  },
+  "team_roster": [
+    {
+      "name": "Bhargav",
+      "role": "PTL",
+      "email": "bhargavballa074@gmail.com"
+    }
+  ],
+  "modules": [
+    "INVENTORY",
+    "BILLING",
+    "AUTH"
+  ],
+  "module_config": {
+    "INVENTORY": {
+      "stages_selected": [
+        "30c",
+        "30d",
+        "50a",
+        "50b",
+        "50c"
+      ],
+      "stages_merged": []
+    },
+    "BILLING": {
+      "stages_selected": [
+        "30c",
+        "30d",
+        "50a",
+        "50b",
+        "50c"
+      ],
+      "stages_merged": []
+    },
+    "AUTH": {
+      "stages_selected": [
+        "30c",
+        "30d",
+        "50a",
+        "50b",
+        "50c"
+      ],
+      "stages_merged": []
+    }
+  },
+  "stages": {
+    "00": {
+      "status": "approved",
+      "mode": "greenfield",
+      "doc_type": "client-context",
+      "output": "docs/client-context.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": {
+        "docs\\client-context.md": "07b76ed59cb75d9107c198e02823e8c98b18aa7de8131a32b0c61b5a3d280339"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\client-context.md": "07b76ed59cb75d9107c198e02823e8c98b18aa7de8131a32b0c61b5a3d280339"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "First-author: Discovery Context drafted from a single stakeholder Q&A round (Admin/Delivery Agent/End User roles, Phase 1 = COD-only online ordering + delivery). Short hash: dHDeNRO6uU."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved all 11 open questions into Decisions (decision-01..11) after a follow-up Q&A round: service area, dispatch, COD refusal, fee tiers, walk-in sales, catalog import, launch volume, regulatory scope, COD verification, stale-order stock release, Phase 2 deferral. Short hash: ubvlik25zj."
+        }
+      ]
+    },
+    "10": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "vision",
+      "output": "docs/vision.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "20": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "business-requirements",
+      "output": "docs/business-requirements.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30a": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "architecture",
+      "output": "docs/system-architecture.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30b": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "roadmap",
+      "output": "docs/implementation-roadmap.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30c:INVENTORY": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "solution-spec",
+      "output": "docs/implementation/INVENTORY/solution.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30d:INVENTORY": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "system-spec",
+      "output": "docs/implementation/INVENTORY/system.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50a:INVENTORY": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "trd",
+      "output": "docs/implementation/INVENTORY/trd.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50b:INVENTORY": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "test-specification",
+      "output": "docs/implementation/INVENTORY/test-specification.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50c:INVENTORY": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "tasks",
+      "output": "docs/implementation/INVENTORY/tasks.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50d:INVENTORY": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "implementation-log",
+      "output": "docs/implementation/INVENTORY/tasks.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30c:BILLING": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "solution-spec",
+      "output": "docs/implementation/BILLING/solution.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30d:BILLING": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "system-spec",
+      "output": "docs/implementation/BILLING/system.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50a:BILLING": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "trd",
+      "output": "docs/implementation/BILLING/trd.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50b:BILLING": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "test-specification",
+      "output": "docs/implementation/BILLING/test-specification.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50c:BILLING": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "tasks",
+      "output": "docs/implementation/BILLING/tasks.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50d:BILLING": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "implementation-log",
+      "output": "docs/implementation/BILLING/tasks.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30c:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "solution-spec",
+      "output": "docs/implementation/AUTH/solution.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "30d:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "system-spec",
+      "output": "docs/implementation/AUTH/system.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50a:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "trd",
+      "output": "docs/implementation/AUTH/trd.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50b:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "test-specification",
+      "output": "docs/implementation/AUTH/test-specification.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50c:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "tasks",
+      "output": "docs/implementation/AUTH/tasks.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50d:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "implementation-log",
+      "output": "docs/implementation/AUTH/tasks.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "90": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "handbook",
+      "output": "handbook",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    }
+  },
+  "contracts": {},
+  "traceability": {},
+  "change_records": {},
+  "risk_register": [],
+  "discovery_records": {},
+  "required_skills": [
+    "doc-narrator",
+    "vyasa"
+  ],
+  "jira": {
+    "project_key": null,
+    "board_id": null,
+    "synced_at": null,
+    "ticket_map": {},
+    "user_map": {},
+    "workflow_preset": "divami-engineering-jira-standard",
+    "done_statuses": [
+      "Done",
+      "Done - Not Reproducible",
+      "Done - Not A Bug"
+    ]
+  }
+}
