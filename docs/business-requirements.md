@@ -345,6 +345,7 @@ Every FR traces to exactly one UC; none are orphaned.
 | FR-026 | An order unconfirmed/uncollected past a timeout is automatically marked `cancelled` (reason: `stale_timeout`) with stock released; the timeout value is set at stage 30d. | UC-011 |
 | FR-027 | Admin authenticates via a single shared login (username/password); no per-staff accounts in Phase 1. | UC-006 |
 | FR-028 | All End User-facing text renders in English only. | UC-002 |
+| FR-029 | Admin can deactivate a currently-approved delivery agent, immediately preventing new assignments to them. | UC-009 |
 
 ## Acceptance Criteria
 
@@ -380,6 +381,7 @@ Each AC is written as Given/When/Then and maps one-to-one to its FR.
 | AC-026 | Given a `placed` or `assigned` order that exceeds the timeout without progressing, when the timeout elapses, then the order becomes `cancelled` (reason: `stale_timeout`) and stock is released automatically, with no admin action required. |
 | AC-027 | Given the single Admin login credentials, when entered correctly, then Admin has access to catalog, stock, and order/agent management; given incorrect credentials, then access is denied. |
 | AC-028 | Given any End User-facing screen, when rendered, then all text is in English. |
+| AC-029 | Given an `approved` delivery agent, when admin deactivates them, then their status becomes `deactivated` and they can no longer receive new order assignments; already-assigned in-flight orders are unaffected by this AC (handled by UC-008's reassignment flow if needed). |
 
 ## Non-Functional Requirements
 
@@ -469,7 +471,7 @@ New terms introduced in this BRD, appended to `docs/domain-glossary.md` (the cli
 
 - **Order status** — the canonical five-value lifecycle: `placed`, `assigned`, `out_for_delivery`, `delivered`, `cancelled`. See [decision-26](#).
 - **Cancellation reason** — sub-field on a `cancelled` order: `customer_requested`, `cod_refused`, or `stale_timeout`.
-- **Delivery Agent status** — `pending_approval`, `approved`, `rejected`.
+- **Delivery Agent status** — `pending_approval` → `approved` → `deactivated` (admin cuts off a previously-approved agent; see FR-029, CR-001), or `pending_approval` → `rejected` (never approved). `deactivated` is reachable only from `approved`; `rejected` is reachable only from `pending_approval` — the two are not interchangeable.
 - **Stock status** — a display-only derived label (`in_stock`, `low_stock`, `out_of_stock`), not a stored field — computed from `stockQuantity` against the low-stock threshold ([decision-25](#)).
 - **Walk-in sale** — an in-person purchase at the physical store, recorded by Admin, that deducts from the same stock pool as online orders ([decision-05, stage 00](client-context.md#phase-1-decisions)).
 - **Service area** — the fixed delivery radius around the store within which checkout is allowed ([decision-01, stage 00](client-context.md#phase-1-decisions)).
@@ -494,4 +496,4 @@ None remain open from this BRD draft — all 6 were resolved in the follow-up ab
 Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-03
-Hash:        94ab13d4aca0�
+Hash:        94ab13d4aca0�

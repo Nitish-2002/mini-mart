@@ -141,7 +141,7 @@
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\business-requirements.md": "55e139ed82a6304d18f55edbb7c8b8f873bc4a90828d5909c2d34ec0af9d3ae4"
+        "docs\\business-requirements.md": "999ee460d59933c0873d8b8ecbbc06c04c999d565a5db33be8e8716024a8c2c9"
       },
       "approvals": [
         {
@@ -161,6 +161,10 @@
         {
           "date": "2026-09-03",
           "note": "Resolved all 6 open questions into Decisions (decision-27..32) after a follow-up Q&A round: agent auth (email+OTP), OTP timing (10min/60s), admin password reset, multi-address support, server-side cart persistence, no order-size cap. Data model extended with AdminAccount, Cart, CartLine. Short hash: ZFjhr8U6DX."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "CR-001: added deactivated status for previously-approved Delivery Agents (FR-029/AC-029), discovered while scoping AUTH's Solution spec. domain-glossary.md updated to match. Short hash: aQXyLSOSLn."
         }
       ]
     },
