@@ -492,7 +492,13 @@
       ],
       "change_task": "TASK-AUTH-001",
       "change_summary": "Add deactivated status for previously-approved Delivery Agents",
-      "approvals": []
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03"
+        }
+      ]
     }
   },
   "risk_register": [

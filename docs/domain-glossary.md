@@ -41,3 +41,10 @@ The lifecycle of an agent's account: `pending_approval` (self-registered, awaiti
 
 ### COD (Cash on Delivery)
 The only payment method in Phase 1 — the delivery agent collects cash from the End User at the point of delivery and confirms collection in-app before the order is marked `delivered`. First established in [`client-context.md`](client-context.md#phase-1-decisions) (decision-09).
+
+## Approval
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-03
+Via:         CR-001
