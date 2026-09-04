@@ -44,6 +44,18 @@ class AgentRegisterOut(BaseModel):
     status: Literal["pending_approval"]
 
 
+AgentStatus = Literal["pending_approval", "approved", "deactivated", "rejected"]
+AgentAction = Literal["approve", "reject", "deactivate", "reactivate"]
+
+
+class AgentStatusUpdateIn(BaseModel):
+    action: AgentAction
+
+
+class AgentStatusUpdateOut(BaseModel):
+    status: AgentStatus
+
+
 class ErrorOut(BaseModel):
     error: str
     retry_after_seconds: int | None = None

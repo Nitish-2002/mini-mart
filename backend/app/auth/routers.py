@@ -1,18 +1,22 @@
+import uuid
+
 from fastapi import APIRouter, Depends, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import services
+from app.auth.dependencies import Principal, get_current_user, require_role
 from app.auth.schemas import (
     AgentRegisterIn,
     AgentRegisterOut,
+    AgentStatusUpdateIn,
+    AgentStatusUpdateOut,
     ErrorOut,
     OtpRequestIn,
     OtpRequestOut,
     OtpVerifyIn,
     OtpVerifyOut,
 )
-from app.auth.dependencies import Principal, get_current_user
 from app.auth.session import IssuedSession, clear_session_cookie, revoke_session, set_session_cookie
 from app.core.db import get_session
 
@@ -87,6 +91,33 @@ async def agent_register(
             content=ErrorOut(error="email_already_registered").model_dump(exclude_none=True),
         )
     return AgentRegisterOut(status="pending_approval")
+
+
+@router.post(
+    "/agent/{agent_id}/status",
+    response_model=AgentStatusUpdateOut,
+    responses={404: {"model": ErrorOut}, 409: {"model": ErrorOut}},
+)
+async def agent_status_update(
+    agent_id: uuid.UUID,
+    body: AgentStatusUpdateIn,
+    principal: Principal = Depends(require_role("admin")),
+    session: AsyncSession = Depends(get_session),
+) -> AgentStatusUpdateOut | JSONResponse:
+    try:
+        new_status = await services.update_agent_status(
+            session, agent_id, body.action, principal.user_id
+        )
+    except services.AgentNotFound:
+        return JSONResponse(
+            status_code=404, content=ErrorOut(error="agent_not_found").model_dump(exclude_none=True)
+        )
+    except services.InvalidTransition:
+        return JSONResponse(
+            status_code=409,
+            content=ErrorOut(error="invalid_transition").model_dump(exclude_none=True),
+        )
+    return AgentStatusUpdateOut(status=new_status)
 
 
 @router.post("/logout", status_code=204)

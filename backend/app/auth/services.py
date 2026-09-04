@@ -4,6 +4,7 @@ flows, plus the get_current_user()/require_role() authorization dependency
 exist.
 """
 
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
@@ -12,7 +13,17 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import crypto, email, session as session_module
-from app.auth.models import AuthDeliveryAgent, AuthEndUser, AuthOtpCode
+from app.auth.models import AuthAgentStatusLog, AuthDeliveryAgent, AuthEndUser, AuthOtpCode
+
+# sm-auth-agent-status's closed transition table (trd.md §5b) — the only
+# valid (current_status, action) -> new_status moves. Anything else is
+# rejected as InvalidTransition, per TASK-AUTH-009's own decision budget.
+AGENT_TRANSITIONS: dict[tuple[str, str], str] = {
+    ("pending_approval", "approve"): "approved",
+    ("pending_approval", "reject"): "rejected",
+    ("approved", "deactivate"): "deactivated",
+    ("deactivated", "reactivate"): "approved",  # decision-55
+}
 
 # decision-28 (business-requirements.md)
 OTP_EXPIRY = timedelta(minutes=10)
@@ -41,6 +52,14 @@ class CodeExpired(Exception):
 
 
 class EmailAlreadyRegistered(Exception):
+    pass
+
+
+class AgentNotFound(Exception):
+    pass
+
+
+class InvalidTransition(Exception):
     pass
 
 
@@ -187,3 +206,31 @@ async def register_agent(session: AsyncSession, name: str, phone: str, agent_ema
     except IntegrityError:
         await session.rollback()
         raise EmailAlreadyRegistered() from None
+
+
+async def update_agent_status(
+    session: AsyncSession, agent_id: uuid.UUID, action: str, admin_id: uuid.UUID
+) -> str:
+    """CR-005 / TRD-AUTH-011 / inv-auth-audit-atomicity: the status update
+    and the audit-log row are one transaction — a rollback anywhere here
+    (e.g. the commit failing) takes both back, never just one.
+    """
+    agent = (
+        await session.execute(select(AuthDeliveryAgent).where(AuthDeliveryAgent.id == agent_id))
+    ).scalar_one_or_none()
+    if agent is None:
+        raise AgentNotFound()
+
+    new_status = AGENT_TRANSITIONS.get((agent.status, action))
+    if new_status is None:
+        raise InvalidTransition()
+
+    old_status = agent.status
+    agent.status = new_status
+    session.add(
+        AuthAgentStatusLog(
+            agent_id=agent_id, old_status=old_status, new_status=new_status, changed_by=admin_id
+        )
+    )
+    await session.commit()
+    return new_status
