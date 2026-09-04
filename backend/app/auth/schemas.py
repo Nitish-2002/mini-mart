@@ -1,5 +1,26 @@
 """Pydantic request/response models for interface-auth-identity,
-interface-auth-agent-mgmt, and interface-auth-admin-login. Populated starting
-with TASK-AUTH-006 — shapes are fixed in trd.md's API Contracts, not invented
-here.
+interface-auth-agent-mgmt, and interface-auth-admin-login. Field names and
+shapes are a direct carry-forward from trd.md's API Contracts (including the
+CR-002 `role` field) — never redesigned here.
 """
+
+from typing import Literal
+
+from pydantic import BaseModel, EmailStr
+
+Role = Literal["end_user", "delivery_agent"]
+
+
+class OtpRequestIn(BaseModel):
+    email: EmailStr
+    role: Role
+
+
+class OtpRequestOut(BaseModel):
+    cooldown_seconds: int
+    expires_in_seconds: int
+
+
+class ErrorOut(BaseModel):
+    error: str
+    retry_after_seconds: int | None = None
