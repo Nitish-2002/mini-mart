@@ -439,15 +439,35 @@
       ]
     },
     "30d:AUTH": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "system-spec",
       "output": "docs/implementation/AUTH/system.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\AUTH\\system.md": "7f3538cf0e1c7776575ab80d062c9b944d2de51df4e0d9ec613ded1f4c805ef5"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\system.md": "7f3538cf0e1c7776575ab80d062c9b944d2de51df4e0d9ec613ded1f4c805ef5"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-04",
+          "note": "First-author: AUTH System drafted from Solution/BRD/Architecture. 14 testable behaviors (SY-AUTH-001..014), 3 state machines (agent status, session, reset token), 6 data models, 3 logical interfaces, 3 decisions (reactivation allowed, single-use tokens, no hard-delete), resolved the deactivation cross-module data-flow risk (ORDERS reads AUTH, not pushed) to preserve the AUTH-first build order. 3 open questions (retention, self-deletion, audit trail). Short hash: cgunIlwAst."
+        },
+        {
+          "date": "2026-09-04",
+          "note": "Resolved all 3 open questions after a follow-up round: indefinite agent-record retention no auto-purge (decision-58), no End User self-deletion in Phase 1 (decision-59), append-only agent-status-change audit log added (decision-60, new dm-agent-status-log). Short hash: DlFabSGgZ5."
+        }
+      ]
     },
     "40:AUTH": {
       "status": "not_started",
