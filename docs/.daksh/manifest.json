@@ -1,6 +1,6 @@
 {
   "project": "Mini Mart",
-  "description": "Retail/mart application covering inventory, billing, and user management",
+  "description": "Online ordering and cash-on-delivery mart app covering catalog, order lifecycle, and identity for admin, delivery agent, and end user roles",
   "client": "Mini Mart",
   "created": "2026-09-03",
   "daksh_version": "0.6.1",
@@ -16,28 +16,36 @@
       "name": "Bhargav",
       "role": "PTL",
       "email": "bhargavballa074@gmail.com"
+    },
+    {
+      "name": "Bhargav (Client)",
+      "role": "Client",
+      "email": "bhargavballa074@gmail.com",
+      "note": "Same person as the PTL roster entry above, representing Mini Mart's own client/business-owner sign-off — this project has no separate client stakeholder. Used only to give brd/roadmap-tier change records a genuine second-hat confirmation, not a rubber stamp by a different person."
     }
   ],
   "modules": [
-    "INVENTORY",
-    "BILLING",
+    "CATALOG",
+    "ORDERS",
     "AUTH"
   ],
   "module_config": {
-    "INVENTORY": {
+    "CATALOG": {
       "stages_selected": [
         "30c",
         "30d",
+        "40",
         "50a",
         "50b",
         "50c"
       ],
       "stages_merged": []
     },
-    "BILLING": {
+    "ORDERS": {
       "stages_selected": [
         "30c",
         "30d",
+        "40",
         "50a",
         "50b",
         "50c"
@@ -48,6 +56,7 @@
       "stages_selected": [
         "30c",
         "30d",
+        "40",
         "50a",
         "50b",
         "50c"
@@ -88,175 +97,310 @@
       ]
     },
     "10": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "vision",
       "output": "docs/vision.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\vision.md": "c8b35b52f4504623d557c2968f1ea88ff6268822fb03cf52c7504bf528b05e27"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\vision.md": "14176784a1378556f711cff28a98f668818974215f4b096f9cdd8ab28cfcb5b5"
+          }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\vision.md": "c8b35b52f4504623d557c2968f1ea88ff6268822fb03cf52c7504bf528b05e27"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "First-author: Vision drafted from stage 00 Discovery Context plus 2 follow-up questions (out-of-scope confirmation, handoff definition). Adds the one-deep-module depth claim (decision-12/13/14) and 9 new open questions for BRD. Short hash: 1SU4FR5Rur."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved all 9 open questions into Decisions (decision-15..23) after a follow-up Q&A round: account model, cancellation window, notifications, catalog structure, tax, agent onboarding, language, admin access, mid-delivery reassignment. Short hash: tenH976IpK."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Percolated change (no module exists yet, so /daksh change's module-scoped script doesn't apply per its documented boundary gap -- hand-percolated instead): decision-15 revised from phone+SMS-OTP to email+OTP for End User login, on cost grounds; phone number retained as a plain checkout field for delivery-agent contact only. Raised by Bhargav during /daksh brd intake. Short hash: l7dzj2fsDz."
+        }
+      ]
     },
     "20": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "business-requirements",
       "output": "docs/business-requirements.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\business-requirements.md": "4afa6b23266977bb07b96cc299d5c1d413e217e8c04df56e99458f1644186762"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\business-requirements.md": "55e139ed82a6304d18f55edbb7c8b8f873bc4a90828d5909c2d34ec0af9d3ae4"
+          }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\business-requirements.md": "4afa6b23266977bb07b96cc299d5c1d413e217e8c04df56e99458f1644186762"
+          },
+          "via_cr": "CR-001"
+        },
+        {
+          "by": "Bhargav (Client)",
+          "role": "Client",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\business-requirements.md": "4afa6b23266977bb07b96cc299d5c1d413e217e8c04df56e99458f1644186762"
+          },
+          "via_cr": "CR-001"
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "Manually restored status to approved after CR-001 resolved: approve.py's approve_cr() failed to auto-restore this stage because find_stage_for_doc() compares CR touched_docs (forward-slash, e.g. 'docs/business-requirements.md') against stage.output (also forward-slash) using str(Path(p)), which on Windows renders backslash -- same path-separator bug as elsewhere in this toolchain, this time inside CR resolution. Fixed doc_hash to the actual post-approval-block hash and added both PTL and Client approval entries by hand."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "First-author: BRD drafted from vision.md -- 11 use cases, 28 FRs each tracing to one UC, 28 matching ACs, 5 NFRs, core data model, and a new domain-glossary.md locking the canonical order-status vocabulary. 6 open questions for stage 30. Short hash: w0k9wfHA32."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved all 6 open questions into Decisions (decision-27..32) after a follow-up Q&A round: agent auth (email+OTP), OTP timing (10min/60s), admin password reset, multi-address support, server-side cart persistence, no order-size cap. Data model extended with AdminAccount, Cart, CartLine. Short hash: ZFjhr8U6DX."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "CR-001: added deactivated status for previously-approved Delivery Agents (FR-029/AC-029), discovered while scoping AUTH's Solution spec. domain-glossary.md updated to match. Short hash: aQXyLSOSLn."
+        }
+      ]
     },
     "30a": {
-      "status": "not_started",
+      "status": "in_progress",
       "mode": "greenfield",
       "doc_type": "architecture",
       "output": "docs/system-architecture.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
+      "doc_hash": {
+        "docs\\system-architecture.md": "e63026554fe6bb160bd86e5e2256384f73df6e3a2f69bbc4f4592bdf43b7b816"
+      },
       "approvals": [],
-      "revision_history": []
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "Manifest surgery ahead of first-authoring: renamed modules INVENTORY->CATALOG and BILLING->ORDERS (AUTH unchanged) to match the real module boundaries the BRD's 11 use cases implied, which weren't known at /daksh init. Directories git mv'd; module_config and all 30c/30d/50a/50b/50c/50d stage keys and output paths updated to match. No content existed under the old names to migrate."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "First-author: Architecture drafted from BRD/vision/client-context. Monolithic FastAPI backend (CATALOG/ORDERS/AUTH packages), Next.js frontend (3 role-scoped view groups), Postgres 16, JWT sessions, SQLAlchemy+Alembic. 6 decisions (33-38), 6 open questions (27-32, mostly hosting-target-dependent). Short hash: 1Xmj0EqO6Q."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved 5 of 6 open questions into Decisions (decision-39..43): Resend for email, AWS S3 for storage, GitHub Actions for CI/CD, keep PREVIEW environment, daily/7-day DB backups. oq-27 (hosting target) remains genuinely open pending the client. Short hash: saFWidJkdh."
+        }
+      ]
     },
     "30b": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "roadmap",
       "output": "docs/implementation-roadmap.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation-roadmap.md": "827a8d034d19efaa18475968e8525b3f8068ba31f5a7050f48ccb8f7a07fef2e"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03",
+          "doc_hash": {
+            "docs\\implementation-roadmap.md": "827a8d034d19efaa18475968e8525b3f8068ba31f5a7050f48ccb8f7a07fef2e"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "First-author: Roadmap drafted from architecture/BRD/vision. Dependency-driven build order AUTH->CATALOG->ORDERS (decision-45), Design stage selected for all 3 modules (decision-44), solo/AI-assisted capacity with no fixed sprints (decision-46). 5 milestones (2 new, 3 reused from BRD), 3 open questions. Short hash: CzFZJ5K9SK."
+        },
+        {
+          "date": "2026-09-03",
+          "note": "Resolved all 3 open questions after a follow-up round: no hard deadline (decision-46 re-confirmed, after a one-week date was raised, checked, and clarified as illustrative not real), CATALOG waits for AUTH (decision-47), Design fully closes before TRD (decision-48). Short hash: eaTt4iJw8t."
+        }
+      ]
     },
-    "30c:INVENTORY": {
+    "30c:CATALOG": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "solution-spec",
-      "output": "docs/implementation/INVENTORY/solution.md",
+      "output": "docs/implementation/CATALOG/solution.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "30d:INVENTORY": {
+    "30d:CATALOG": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "system-spec",
-      "output": "docs/implementation/INVENTORY/system.md",
+      "output": "docs/implementation/CATALOG/system.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50a:INVENTORY": {
+    "40:CATALOG": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "experience-design",
+      "output": "docs/implementation/CATALOG/experience-design.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50a:CATALOG": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "trd",
-      "output": "docs/implementation/INVENTORY/trd.md",
+      "output": "docs/implementation/CATALOG/trd.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50b:INVENTORY": {
+    "50b:CATALOG": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "test-specification",
-      "output": "docs/implementation/INVENTORY/test-specification.md",
+      "output": "docs/implementation/CATALOG/test-specification.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50c:INVENTORY": {
+    "50c:CATALOG": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "tasks",
-      "output": "docs/implementation/INVENTORY/tasks.md",
+      "output": "docs/implementation/CATALOG/tasks.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50d:INVENTORY": {
+    "50d:CATALOG": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "implementation-log",
-      "output": "docs/implementation/INVENTORY/tasks.md",
+      "output": "docs/implementation/CATALOG/tasks.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "30c:BILLING": {
+    "30c:ORDERS": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "solution-spec",
-      "output": "docs/implementation/BILLING/solution.md",
+      "output": "docs/implementation/ORDERS/solution.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "30d:BILLING": {
+    "30d:ORDERS": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "system-spec",
-      "output": "docs/implementation/BILLING/system.md",
+      "output": "docs/implementation/ORDERS/system.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50a:BILLING": {
+    "40:ORDERS": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "experience-design",
+      "output": "docs/implementation/ORDERS/experience-design.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "50a:ORDERS": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "trd",
-      "output": "docs/implementation/BILLING/trd.md",
+      "output": "docs/implementation/ORDERS/trd.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50b:BILLING": {
+    "50b:ORDERS": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "test-specification",
-      "output": "docs/implementation/BILLING/test-specification.md",
+      "output": "docs/implementation/ORDERS/test-specification.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50c:BILLING": {
+    "50c:ORDERS": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "tasks",
-      "output": "docs/implementation/BILLING/tasks.md",
+      "output": "docs/implementation/ORDERS/tasks.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
       "approvals": [],
       "revision_history": []
     },
-    "50d:BILLING": {
+    "50d:ORDERS": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "implementation-log",
-      "output": "docs/implementation/BILLING/tasks.md",
+      "output": "docs/implementation/ORDERS/tasks.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
@@ -264,21 +408,39 @@
       "revision_history": []
     },
     "30c:AUTH": {
-      "status": "not_started",
+      "status": "in_progress",
       "mode": "greenfield",
       "doc_type": "solution-spec",
       "output": "docs/implementation/AUTH/solution.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
+      "doc_hash": {
+        "docs\\implementation\\AUTH\\solution.md": "fae1a52b1b3d4033711f8744f3e66c35db88c0fd92ea306ebac6f3f4322f3f5b"
+      },
       "approvals": [],
-      "revision_history": []
+      "revision_history": [
+        {
+          "date": "2026-09-03",
+          "note": "First-author: AUTH Solution drafted from BRD/vision/architecture. 5 business flows (SS-AUTH-001..005), 3 decisions (cross-role identity, OTP-every-login, admin no-MFA), 3 open questions (session lifetime, rate-limit threshold, deactivation-reassignment interaction). Short hash: xUU92aAJx8."
+        }
+      ]
     },
     "30d:AUTH": {
       "status": "not_started",
       "mode": "greenfield",
       "doc_type": "system-spec",
       "output": "docs/implementation/AUTH/system.md",
+      "inherited_ref": null,
+      "locked_by": null,
+      "doc_hash": null,
+      "approvals": [],
+      "revision_history": []
+    },
+    "40:AUTH": {
+      "status": "not_started",
+      "mode": "greenfield",
+      "doc_type": "experience-design",
+      "output": "docs/implementation/AUTH/experience-design.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": null,
@@ -342,9 +504,54 @@
     }
   },
   "contracts": {},
-  "traceability": {},
-  "change_records": {},
-  "risk_register": [],
+  "traceability": {
+    "TASK-AUTH-001": {
+      "parent": "CR-001",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "status": "todo"
+    }
+  },
+  "change_records": {
+    "CR-001": {
+      "module": "AUTH",
+      "path": "docs\\implementation\\AUTH\\change-records\\CR-001.md",
+      "status": "RESOLVED",
+      "raised_by": "Bhargav",
+      "date": "2026-09-03",
+      "tier": "brd",
+      "touched_docs": [
+        "docs/business-requirements.md",
+        "docs/domain-glossary.md"
+      ],
+      "change_task": "TASK-AUTH-001",
+      "change_summary": "Add deactivated status for previously-approved Delivery Agents",
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-03"
+        },
+        {
+          "by": "Bhargav (Client)",
+          "role": "Client",
+          "date": "2026-09-03"
+        }
+      ]
+    }
+  },
+  "risk_register": [
+    {
+      "risk_id": "RISK-001",
+      "stage": "30b",
+      "reason": "Prior stage 30a approved: 0/1",
+      "detected_at": "2026-09-03T17:50:05.913999+00:00",
+      "status": "open",
+      "acknowledged_by": null,
+      "acknowledged_at": null
+    }
+  ],
   "discovery_records": {},
   "required_skills": [
     "doc-narrator",
