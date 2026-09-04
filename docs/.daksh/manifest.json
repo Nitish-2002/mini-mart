@@ -439,14 +439,14 @@
       ]
     },
     "30d:AUTH": {
-      "status": "pending_approval",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "system-spec",
       "output": "docs/implementation/AUTH/system.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation\\AUTH\\system.md": "7f3538cf0e1c7776575ab80d062c9b944d2de51df4e0d9ec613ded1f4c805ef5"
+        "docs\\implementation\\AUTH\\system.md": "c4f480ad6da821ad40c04a559a90dd50944caf5b265c350ba48b7b9516f33b63"
       },
       "approvals": [
         {
@@ -456,6 +456,15 @@
           "doc_hash": {
             "docs\\implementation\\AUTH\\system.md": "7f3538cf0e1c7776575ab80d062c9b944d2de51df4e0d9ec613ded1f4c805ef5"
           }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\system.md": "c4f480ad6da821ad40c04a559a90dd50944caf5b265c350ba48b7b9516f33b63"
+          },
+          "via_cr": "CR-002"
         }
       ],
       "revision_history": [
@@ -470,14 +479,14 @@
       ]
     },
     "40:AUTH": {
-      "status": "pending_approval",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "experience-design",
       "output": "docs/implementation/AUTH/experience-design.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation\\AUTH\\experience-design.md": "a7a8341663d9526d24ab8f5446059f5fcc650f74d9b4570dd77d2d2feb7a9cf9"
+        "docs\\implementation\\AUTH\\experience-design.md": "ac8cc3448801e5a8dc5c617eacbc9985e41b34423ebacf575a764dd5126b7958"
       },
       "approvals": [
         {
@@ -487,6 +496,15 @@
           "doc_hash": {
             "docs\\implementation\\AUTH\\experience-design.md": "a7a8341663d9526d24ab8f5446059f5fcc650f74d9b4570dd77d2d2feb7a9cf9"
           }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\experience-design.md": "ac8cc3448801e5a8dc5c617eacbc9985e41b34423ebacf575a764dd5126b7958"
+          },
+          "via_cr": "CR-002"
         }
       ],
       "revision_history": [
@@ -509,15 +527,35 @@
       ]
     },
     "50a:AUTH": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "trd",
       "output": "docs/implementation/AUTH/trd.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\AUTH\\trd.md": "48a547387f11203b4ee293037cc940848750c3cada8b5962295bf783ec1b7557"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\trd.md": "48a547387f11203b4ee293037cc940848750c3cada8b5962295bf783ec1b7557"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-04",
+          "note": "First-author: AUTH TRD drafted \u00e2\u20ac\u201d Postgres schema for all 7 data shapes, Argon2id/HMAC-SHA256/PyJWT+HS256 crypto choices, Postgres-backed session revocation reconciling stateless-JWT with sm-auth-session's revoked state, formal API contracts for 8 /v1/auth/* endpoints, idempotency/failure contracts, 5 sequence diagrams. 3 open questions (security-event logging threshold, rejected-agent reconsideration path, password composition rule). Short hash: JJP0RMwjlf."
+        },
+        {
+          "date": "2026-09-04",
+          "note": "Resolved oq-49/50/51 into decision-79/80/81 (no dedicated security-event logging in Phase 1, rejected agents stay terminal, Admin password policy is length-only); no other content changed since both open-question resolutions matched the draft's own tentative defaults. Short hash: TjfNOqbsM1."
+        }
+      ]
     },
     "50b:AUTH": {
       "status": "not_started",
