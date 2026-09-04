@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 
@@ -9,6 +9,18 @@ from app.core.rate_limit import limiter
 app = FastAPI(title="Mini Mart API", version="v1")
 
 app.state.limiter = limiter
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    # Every error body in this API is a bare ErrorOut shape ({"error": ...}),
+    # never FastAPI's default {"detail": ...} envelope — get_current_user()/
+    # require_role() (decision-76, shared by every future protected route in
+    # every module) raise plain HTTPException, so this unwraps their
+    # dict-shaped `detail` to match every other endpoint's hand-built
+    # JSONResponse instead of leaving it double-wrapped.
+    content = exc.detail if isinstance(exc.detail, dict) else {"error": str(exc.detail)}
+    return JSONResponse(status_code=exc.status_code, content=content)
 
 
 @app.exception_handler(RateLimitExceeded)
