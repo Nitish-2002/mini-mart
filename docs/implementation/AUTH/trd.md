@@ -353,7 +353,7 @@ stateDiagram-v2
 
 | Transition | Trigger | Write? |
 |---|---|---|
-| Every arrow above | The corresponding Admin action on `interface-auth-agent-mgmt` | **TRD-AUTH-011** ([inv-auth-audit-atomicity](#)): update `auth_delivery_agents.status` and insert one `auth_agent_status_log` row in the **same transaction** — never one without the other |
+| Every arrow above | The corresponding Admin action on `interface-auth-agent-mgmt`, concretely `POST /v1/auth/agent/{agent_id}/status` (CR-005) | **TRD-AUTH-011** ([inv-auth-audit-atomicity](#)): update `auth_delivery_agents.status` and insert one `auth_agent_status_log` row in the **same transaction** — never one without the other |
 
 **Recovery transitions:** `deactivated -> approved` ([decision-55](../system.md#state-machines)) is the only non-linear edge, Admin-triggered, no cost beyond the normal approve action. `rejected` is genuinely terminal — there is no re-registration path for a rejected email in Phase 1; a rejected applicant would need Admin to manually reset their record's status via the same approve action if a real reconsideration case ever arises (not a separate feature, just the existing transition applied to a `rejected` row — worth flagging as untested territory for [Test Specification](test-specification.md), once it exists).
 
@@ -366,6 +366,7 @@ All eight endpoints below live under `/v1/auth/*` on [interface-01](../../system
 | `/v1/auth/otp/request` | POST | `FRONTEND_STOREFRONT`, `FRONTEND_AGENT` | None |
 | `/v1/auth/otp/verify` | POST | `FRONTEND_STOREFRONT`, `FRONTEND_AGENT` | None |
 | `/v1/auth/agent/register` | POST | `FRONTEND_AGENT` | None |
+| `/v1/auth/agent/{agent_id}/status` | POST | `FRONTEND_ADMIN` | Session (`admin`) |
 | `/v1/auth/agent/status` | GET | `FRONTEND_AGENT` | Session (`delivery_agent`) |
 | `/v1/auth/admin/login` | POST | `FRONTEND_ADMIN` | None |
 | `/v1/auth/admin/password-reset/request` | POST | `FRONTEND_ADMIN` | None |
@@ -424,6 +425,23 @@ responses:
     error: { type: string, const: email_already_registered }
 ```
 Errors: **TRD-AUTH-014:** `409 email_already_registered` fires whenever `auth_delivery_agents.email` already has a row, regardless of that row's status — not retryable with the same payload; the response directs the caller to `GET /v1/auth/agent/status` instead of erroring uninformatively, since the existing record might be theirs. Photo upload itself is [infra-03](../../system-architecture.md#database-architecture) `OBJECT_STORAGE` (AWS S3) — this endpoint takes a URL, not a file body.
+
+### `POST /v1/auth/agent/{agent_id}/status` (CR-005)
+
+The "admin decision in" half of [interface-auth-agent-mgmt](#) — [agent/register](#post-v1authagentregister) above is only the "registration details in" half. One endpoint with an action enum, not four separate endpoints (TASK-AUTH-009's own decision budget left this choice open) — keeps the closed-transition validation below in one place.
+
+```yaml
+requestBody:
+  action: { type: string, enum: [approve, reject, deactivate, reactivate], required: true }
+responses:
+  "200":
+    status: { type: string, enum: [pending_approval, approved, deactivated, rejected] }
+  "404":
+    error: { type: string, const: agent_not_found }
+  "409":
+    error: { type: string, const: invalid_transition }
+```
+Admin-only (`require_role("admin")`, [decision-76](#)). `404 agent_not_found` if `agent_id` doesn't match any `auth_delivery_agents` row. `409 invalid_transition` for any `(current_status, action)` pair not in [sm-auth-agent-status](#5b-state-machines)'s closed transition table — e.g. `approve` on an already-`approved` agent, or `reactivate` on a `pending_approval` one; **TASK-AUTH-009's decision budget requires this rejection explicitly, not a silent no-op.** Every accepted transition updates `auth_delivery_agents.status` and inserts one `auth_agent_status_log` row in the same database transaction ([inv-auth-audit-atomicity](#5a-persistence-constraints)).
 
 ### `GET /v1/auth/agent/status`
 
@@ -680,3 +698,8 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
 Via:         CR-004
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Via:         CR-005

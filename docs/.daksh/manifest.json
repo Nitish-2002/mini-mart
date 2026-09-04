@@ -1545,7 +1545,7 @@
     "CR-005": {
       "module": "AUTH",
       "path": "docs\\implementation\\AUTH\\change-records\\CR-005.md",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "raised_by": "Bhargav",
       "date": "2026-09-04",
       "tier": "trd",
@@ -1554,7 +1554,13 @@
       ],
       "change_task": "TASK-AUTH-024",
       "change_summary": "trd.md never documented an endpoint for Admin's agent approve/reject/deactivate/reactivate actions",
-      "approvals": []
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04"
+        }
+      ]
     }
   },
   "risk_register": [
