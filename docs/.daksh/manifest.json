@@ -104,7 +104,7 @@
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\vision.md": "c8b35b52f4504623d557c2968f1ea88ff6268822fb03cf52c7504bf528b05e27"
+        "docs\\vision.md": "cb26981b998d0c6dca431133518447d5d4460774dc9e0182f52d312b979ff925"
       },
       "approvals": [
         {
@@ -230,7 +230,7 @@
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation-roadmap.md": "827a8d034d19efaa18475968e8525b3f8068ba31f5a7050f48ccb8f7a07fef2e"
+        "docs\\implementation-roadmap.md": "78394d4b571ffafa99616bac91dac1c99356f568143763f5e8a25c776fb9aa48"
       },
       "approvals": [
         {
@@ -415,7 +415,7 @@
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation\\AUTH\\solution.md": "e14846088735fba47d989933471d84d8a11ebee76fd825a194ca4e4fde5bc278"
+        "docs\\implementation\\AUTH\\solution.md": "f1097fbb5fb061be4a0002c9853a9f9adad7c2503ebd4e82cb7f89e0347b369d"
       },
       "approvals": [
         {
@@ -527,14 +527,14 @@
       ]
     },
     "50a:AUTH": {
-      "status": "pending_approval",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "trd",
       "output": "docs/implementation/AUTH/trd.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation\\AUTH\\trd.md": "48a547387f11203b4ee293037cc940848750c3cada8b5962295bf783ec1b7557"
+        "docs\\implementation\\AUTH\\trd.md": "39713cd2257c9ec95a93eb75404506cddac69bc3ed76d63ee761ae8414bac531"
       },
       "approvals": [
         {
@@ -544,6 +544,15 @@
           "doc_hash": {
             "docs\\implementation\\AUTH\\trd.md": "48a547387f11203b4ee293037cc940848750c3cada8b5962295bf783ec1b7557"
           }
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\trd.md": "39713cd2257c9ec95a93eb75404506cddac69bc3ed76d63ee761ae8414bac531"
+          },
+          "via_cr": "CR-003"
         }
       ],
       "revision_history": [
@@ -558,15 +567,31 @@
       ]
     },
     "50b:AUTH": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "test-specification",
       "output": "docs/implementation/AUTH/test-specification.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\AUTH\\test-specification.md": "8f4cae68bf0705bfcdb63fffa8b14f0944e5083b980ebb25aab7629d3058ddee"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\test-specification.md": "8f4cae68bf0705bfcdb63fffa8b14f0944e5083b980ebb25aab7629d3058ddee"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-04",
+          "note": "First-author: AUTH Test Specification drafted \u2014 42 TEST-AUTH-NNN cases across unit/integration/contract/e2e/frontend-a11y/edge-security-performance layers, full traceability for all 5 SS-AUTH, 14 SY-AUTH, 15 TRD-AUTH, and 12 DS-AUTH requirements, all registered in manifest.traceability. Short hash: RpGiQeTfC2."
+        }
+      ]
     },
     "50c:AUTH": {
       "status": "not_started",
@@ -624,6 +649,449 @@
       "stage": "50c",
       "module": "AUTH",
       "status": "todo"
+    },
+    "TEST-AUTH-001": {
+      "parent": "TRD-AUTH-002",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-002": {
+      "parent": "TRD-AUTH-003",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-003": {
+      "parent": "TRD-AUTH-015",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-004": {
+      "parent": "decision-70",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-005": {
+      "parent": "decision-81",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-006": {
+      "parent": "CR-002",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-007": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-001",
+        "TRD-AUTH-007"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-008": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-002"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-009": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-003",
+        "TRD-AUTH-009"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-010": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-001",
+        "TRD-AUTH-005"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-011": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-004"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-012": {
+      "parent": [
+        "SS-AUTH-002",
+        "SY-AUTH-005",
+        "TRD-AUTH-014"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-013": {
+      "parent": [
+        "SS-AUTH-002",
+        "SY-AUTH-006",
+        "SY-AUTH-007",
+        "SY-AUTH-008",
+        "TRD-AUTH-011"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-014": {
+      "parent": "TRD-AUTH-001",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-015": {
+      "parent": [
+        "SS-AUTH-003",
+        "SY-AUTH-009",
+        "SY-AUTH-010",
+        "TRD-AUTH-002"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-016": {
+      "parent": [
+        "SS-AUTH-004",
+        "SY-AUTH-011",
+        "TRD-AUTH-007"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-017": {
+      "parent": [
+        "SS-AUTH-004",
+        "SY-AUTH-012"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-018": {
+      "parent": [
+        "SS-AUTH-004",
+        "SY-AUTH-012",
+        "TRD-AUTH-008"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-019": {
+      "parent": [
+        "SS-AUTH-005",
+        "SY-AUTH-013",
+        "TRD-AUTH-004"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-020": {
+      "parent": [
+        "SS-AUTH-005",
+        "SY-AUTH-008",
+        "SY-AUTH-014"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-021": {
+      "parent": [
+        "SS-AUTH-005",
+        "TRD-AUTH-013"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-022": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-001"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-023": {
+      "parent": [
+        "SS-AUTH-001",
+        "SY-AUTH-002",
+        "SY-AUTH-003"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-024": {
+      "parent": [
+        "SS-AUTH-002",
+        "SY-AUTH-005",
+        "TRD-AUTH-014"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-025": {
+      "parent": "SS-AUTH-002",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-026": {
+      "parent": [
+        "SS-AUTH-003",
+        "SY-AUTH-009",
+        "SY-AUTH-010"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-027": {
+      "parent": [
+        "SS-AUTH-004",
+        "SY-AUTH-011",
+        "TRD-AUTH-010"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-028": {
+      "parent": [
+        "SS-AUTH-004",
+        "SY-AUTH-012"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-029": {
+      "parent": [
+        "SS-AUTH-005",
+        "TRD-AUTH-013"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-030": {
+      "parent": "SS-AUTH-001",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-031": {
+      "parent": "SS-AUTH-002",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-032": {
+      "parent": "SS-AUTH-004",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-033": {
+      "parent": [
+        "SS-AUTH-005",
+        "DS-AUTH-011"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-034": {
+      "parent": [
+        "SS-AUTH-001",
+        "DS-AUTH-001",
+        "DS-AUTH-002",
+        "DS-AUTH-003"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-035": {
+      "parent": [
+        "SS-AUTH-002",
+        "DS-AUTH-004",
+        "DS-AUTH-005",
+        "DS-AUTH-006"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-036": {
+      "parent": [
+        "SS-AUTH-003",
+        "SS-AUTH-004",
+        "DS-AUTH-007",
+        "DS-AUTH-008",
+        "DS-AUTH-009",
+        "DS-AUTH-010"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-037": {
+      "parent": [
+        "SS-AUTH-005",
+        "DS-AUTH-011",
+        "DS-AUTH-012"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-038": {
+      "parent": "TRD-AUTH-012",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-039": {
+      "parent": "risk-auth-email-outage",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-040": {
+      "parent": [
+        "SS-AUTH-005",
+        "SY-AUTH-013"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-041": {
+      "parent": "system.md#module-quality-budgets",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-AUTH-042": {
+      "parent": "TRD-AUTH-006",
+      "children": [],
+      "stage": "50b",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "designed"
     }
   },
   "change_records": {
