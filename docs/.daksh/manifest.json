@@ -486,7 +486,7 @@
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation\\AUTH\\experience-design.md": "f7a015c7385fc10e535e4d51407ef8655717869309d504521965bd87868fba68"
+        "docs\\implementation\\AUTH\\experience-design.md": "ea587f848966de669f508627f4c9a86bf1a5347af414b75802fb8b680ba02418"
       },
       "approvals": [
         {
@@ -514,6 +514,15 @@
             "docs\\implementation\\AUTH\\experience-design.md": "f7a015c7385fc10e535e4d51407ef8655717869309d504521965bd87868fba68"
           },
           "via_cr": "CR-004"
+        },
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\experience-design.md": "ea587f848966de669f508627f4c9a86bf1a5347af414b75802fb8b680ba02418"
+          },
+          "via_cr": "CR-006"
         }
       ],
       "revision_history": [
@@ -1467,6 +1476,13 @@
       "stage": "50c",
       "module": "AUTH",
       "status": "todo"
+    },
+    "TASK-AUTH-026": {
+      "parent": "CR-007",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "status": "todo"
     }
   },
   "change_records": {
@@ -1597,6 +1613,20 @@
           "date": "2026-09-04"
         }
       ]
+    },
+    "CR-007": {
+      "module": "AUTH",
+      "path": "docs\\implementation\\AUTH\\change-records\\CR-007.md",
+      "status": "OPEN",
+      "raised_by": "Bhargav",
+      "date": "2026-09-04",
+      "tier": "design",
+      "touched_docs": [
+        "docs/implementation/AUTH/experience-design.md"
+      ],
+      "change_task": "TASK-AUTH-026",
+      "change_summary": "FRONTEND_AGENT's routes were never namespaced, colliding with FRONTEND_STOREFRONT's identical bare paths in the same one-deployable app",
+      "approvals": []
     }
   },
   "risk_register": [

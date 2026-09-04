@@ -627,3 +627,14 @@ Hash:        00ad183eef60…
 - [ ] All changes listed in CR-006 ## Change Summary are applied
 - [ ] CR-006 approved via `/daksh approve CR-006`
 - [ ] Patched docs pass `/daksh preflight`
+
+
+#### TASK-AUTH-026: [CR-007] FRONTEND_AGENT's routes were never namespaced, colliding with FRONTEND_STOREFRONT's identical bare paths in the same one-deployable app
+- **Depends on:** none
+- **Decision budget:** 30 min
+- **Status:** todo
+
+**Acceptance criteria:**
+- [ ] All changes listed in CR-007 ## Change Summary are applied
+- [ ] CR-007 approved via `/daksh approve CR-007`
+- [ ] Patched docs pass `/daksh preflight`
