@@ -248,8 +248,8 @@ CREATE TABLE auth_admin_accounts (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     CONSTRAINT auth_admin_accounts_singleton CHECK (id = '00000000-0000-0000-0000-000000000001'::uuid)
 );
--- inv-auth-singleton-admin: the CHECK + fixed-default PK means a second row can only ever
--- be inserted with the SAME id, which the PRIMARY KEY constraint then rejects outright.
+-- TRD-AUTH-001 (inv-auth-singleton-admin): the CHECK + fixed-default PK means a second row
+-- can only ever be inserted with the SAME id, which the PRIMARY KEY constraint then rejects outright.
 
 CREATE TABLE auth_otp_codes (
     id BIGSERIAL PRIMARY KEY,
@@ -337,9 +337,9 @@ stateDiagram-v2
 
 | Transition | Trigger | Write? |
 |---|---|---|
-| `[*] -> unused` | `POST /v1/auth/admin/password-reset/request` | Insert `auth_reset_tokens` row; any prior unused row for the same admin is superseded ([decision-74](#)) — verify only ever checks the latest |
+| `[*] -> unused` | `POST /v1/auth/admin/password-reset/request` | Insert `auth_reset_tokens` row; **TRD-AUTH-007:** any prior unused row for the same admin is superseded ([decision-74](#)) — verify only ever checks the latest |
 | `unused -> used` | `POST /v1/auth/admin/password-reset/confirm` with a valid token | Update: `used_at = now()` on that row; `auth_admin_accounts.password_hash` updated in the **same transaction** |
-| `unused -> expired` | `expires_at` elapses | **No write.** Confirm checks `expires_at > now() AND used_at IS NULL`; both being false renders it "expired" without a stored flag. |
+| `unused -> expired` | `expires_at` elapses | **No write.** Confirm checks `expires_at > now() AND used_at IS NULL`; both being false renders it "expired" without a stored flag. **TRD-AUTH-008** ([inv-auth-single-use-tokens](#)): a token whose `used_at` is already set is rejected on a second confirm attempt, even before `expires_at`. |
 
 ```mermaid
 stateDiagram-v2
@@ -353,7 +353,7 @@ stateDiagram-v2
 
 | Transition | Trigger | Write? |
 |---|---|---|
-| Every arrow above | The corresponding Admin action on `interface-auth-agent-mgmt` | Update `auth_delivery_agents.status`, insert one `auth_agent_status_log` row — **same transaction** ([inv-auth-audit-atomicity](#)) |
+| Every arrow above | The corresponding Admin action on `interface-auth-agent-mgmt` | **TRD-AUTH-011** ([inv-auth-audit-atomicity](#)): update `auth_delivery_agents.status` and insert one `auth_agent_status_log` row in the **same transaction** — never one without the other |
 
 **Recovery transitions:** `deactivated -> approved` ([decision-55](../system.md#state-machines)) is the only non-linear edge, Admin-triggered, no cost beyond the normal approve action. `rejected` is genuinely terminal — there is no re-registration path for a rejected email in Phase 1; a rejected applicant would need Admin to manually reset their record's status via the same approve action if a real reconsideration case ever arises (not a separate feature, just the existing transition applied to a `rejected` row — worth flagging as untested territory for [Test Specification](test-specification.md), once it exists).
 
@@ -386,7 +386,7 @@ responses:
     error: { type: string, const: rate_limited }
     retry_after_seconds: { type: integer }
 ```
-Errors: `429 rate_limited` — not retryable until `retry_after_seconds` elapses; audit: none (not security-sensitive, just a rate signal); copy key: drives [ds-auth-003](experience-design.md#4c-design-execution).
+Errors: `429 rate_limited` — not retryable until `retry_after_seconds` elapses; audit: none (not security-sensitive, just a rate signal); copy key: drives [ds-auth-003](experience-design.md#4c-design-execution). **TRD-AUTH-005:** requests for a given `(email, role)` in the trailing 60 minutes are counted server-side ([decision-72](#)); the 6th within that window is rejected `429`, matching [decision-53](../solution.md#business-states-decisions-and-recovery)'s 5/hour limit exactly.
 
 ### `POST /v1/auth/otp/verify`
 
@@ -405,7 +405,7 @@ responses:
   "410":
     error: { type: string, const: code_expired }
 ```
-Errors: `401 invalid_code` — retryable (re-enter code, subject to attempt not consuming the OTP per [inv-auth-single-use-tokens](#) only applying to a *correct* code); `410 code_expired` — not retryable, must request a new code; both surface inline on [ds-auth-002](experience-design.md#4c-design-execution). Audit: a `401`/`410` is not itself logged as a distinct security event at Phase 1 scale, only a normal log line — see [decision-79](#).
+Errors: `401 invalid_code` — retryable (re-enter code, subject to attempt not consuming the OTP per [inv-auth-single-use-tokens](#) only applying to a *correct* code); `410 code_expired` — not retryable, must request a new code; both surface inline on [ds-auth-002](experience-design.md#4c-design-execution). Audit: a `401`/`410` is not itself logged as a distinct security event at Phase 1 scale, only a normal log line — see [decision-79](#). **TRD-AUTH-009:** a wrong-code attempt does not set `consumed_at` on the outstanding row — the same code remains verifiable by a further attempt until it either expires or is correctly entered.
 
 ### `POST /v1/auth/agent/register`
 
@@ -421,7 +421,7 @@ responses:
   "409":
     error: { type: string, const: email_already_registered }
 ```
-Errors: `409 email_already_registered` — not retryable with the same payload; the response directs the caller to `GET /v1/auth/agent/status` instead of erroring uninformatively, since the existing record might be theirs. Photo upload itself is [infra-03](../../system-architecture.md#database-architecture) `OBJECT_STORAGE` (AWS S3) — this endpoint takes a URL, not a file body.
+Errors: **TRD-AUTH-014:** `409 email_already_registered` fires whenever `auth_delivery_agents.email` already has a row, regardless of that row's status — not retryable with the same payload; the response directs the caller to `GET /v1/auth/agent/status` instead of erroring uninformatively, since the existing record might be theirs. Photo upload itself is [infra-03](../../system-architecture.md#database-architecture) `OBJECT_STORAGE` (AWS S3) — this endpoint takes a URL, not a file body.
 
 ### `GET /v1/auth/agent/status`
 
@@ -448,7 +448,7 @@ responses:
     error: { type: string, const: rate_limited }
     retry_after_seconds: { type: integer }
 ```
-`401 invalid_credentials` intentionally does not distinguish wrong username from wrong password ([Failure Shape](system.md#logical-interfaces-and-data-flow)'s enumeration-prevention principle, extended here). `429 rate_limited` is the per-IP limiter ([decision-73](#)) — **not** account lockout; a different IP can still authenticate the account immediately.
+`401 invalid_credentials` intentionally does not distinguish wrong username from wrong password ([Failure Shape](system.md#logical-interfaces-and-data-flow)'s enumeration-prevention principle, extended here). **TRD-AUTH-006:** `429 rate_limited` fires at the 11th login attempt from the same source IP within a trailing 15 minutes ([decision-73](#)) — **not** account lockout; a different IP can still authenticate the account immediately, and repeated failures from varied IPs are never blocked by this mechanism.
 
 ### `POST /v1/auth/admin/password-reset/request`
 
@@ -458,7 +458,7 @@ requestBody:
 responses:
   "202": {}
 ```
-Always `202 {}`, whether or not the email matches the registered recovery address ([decision-77](#)) — no error variant exists by design.
+**TRD-AUTH-010** ([decision-77](#)): always `202 {}`, whether or not the email matches the registered recovery address — no error variant exists by design.
 
 ### `POST /v1/auth/admin/password-reset/confirm`
 
@@ -480,7 +480,7 @@ responses:
 responses:
   "204": {}
 ```
-Session-scoped; revokes the caller's own current `jti` only ([sm-auth-session](#)'s `active -> revoked`). Not part of AUTH's own screen inventory — the triggering control lives in whichever screen/shell each frontend app puts its account menu, the same way [ds-auth-011](experience-design.md#4c-design-execution) is "shared shell state, not a standalone screen."
+**TRD-AUTH-013:** session-scoped; revokes the caller's own current `jti` only ([sm-auth-session](#)'s `active -> revoked`) — every other session, including other logged-in devices for the same account, is left untouched. Not part of AUTH's own screen inventory — the triggering control lives in whichever screen/shell each frontend app puts its account menu, the same way [ds-auth-011](experience-design.md#4c-design-execution) is "shared shell state, not a standalone screen."
 
 ## 6a Idempotency and Failure Contracts
 
@@ -603,9 +603,9 @@ No new database, cache, or message-queue dependency — `auth_sessions`/`auth_ot
 
 **Authentication:** OTP (End User, Delivery Agent) via [interface-auth-identity](#), password (Admin) via [interface-auth-admin-login](#) — both flows terminate in the same JWT issuance mechanism ([decision-70](#)).
 
-**Authorization:** every protected route in every module declares its required role via `Depends(require_role(...))` ([decision-76](#)), which internally calls `get_current_user()` — the sequence is: verify JWT signature + `exp` (cryptographic, no DB), then one indexed lookup against `auth_sessions` for revocation ([decision-71](#)), then compare the resolved role against the route's declared requirement. A missing/invalid/expired/revoked session is rejected identically (`401`, [system.md's Failure Shape](system.md#logical-interfaces-and-data-flow)); a valid session with the wrong role is rejected distinctly (`403`).
+**Authorization:** every protected route in every module declares its required role via `Depends(require_role(...))` ([decision-76](#)), which internally calls `get_current_user()` — the sequence is: verify JWT signature + `exp` (cryptographic, no DB), then one indexed lookup against `auth_sessions` for revocation ([decision-71](#)). **TRD-AUTH-004:** a token whose signature and `exp` are both valid is still rejected if its `jti` is missing from `auth_sessions` or has a non-null `revoked_at`. A missing/invalid/expired/revoked session is rejected identically (`401`, [system.md's Failure Shape](system.md#logical-interfaces-and-data-flow)); a valid session with the wrong role is rejected distinctly (`403`).
 
-**Data protection:** [inv-auth-no-secrets-in-logs](#) — passwords, OTP codes, and reset tokens are never logged in plaintext; hashed at rest ([decision-68](#), [decision-69](#)); compared in constant time ([decision-78](#)). TLS termination is a hosting-layer concern, deferred to `oq-27`.
+**Data protection:** **TRD-AUTH-002:** Admin's password is hashed with Argon2id ([decision-68](#)) before it is ever written to `auth_admin_accounts.password_hash`; plaintext is never persisted. **TRD-AUTH-003:** OTP codes and reset tokens are hashed with keyed HMAC-SHA256 ([decision-69](#)) before being written to `auth_otp_codes.code_hash`/`auth_reset_tokens.token_hash`. **TRD-AUTH-012** ([inv-auth-no-secrets-in-logs](#)): no password, OTP code, or reset token value — hashed or plaintext-in-transit — appears in any application log line. **TRD-AUTH-015:** OTP/reset-token hash comparison uses `hmac.compare_digest` ([decision-78](#)), never `==` — verified by code inspection, not a runtime behavioral test (see [Test Specification](test-specification.md) for how this is checked). TLS termination is a hosting-layer concern, deferred to `oq-27`.
 
 **Enumeration resistance:** Admin login's `401` doesn't distinguish wrong-username from wrong-password; password-reset-request's `202` doesn't reveal whether the email matched ([decision-77](#)) — both extend the same principle [system.md](system.md#logical-interfaces-and-data-flow) already established for session rejection.
 
@@ -666,3 +666,8 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
 Hash:        7d66cc32e6ae…
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Via:         CR-003

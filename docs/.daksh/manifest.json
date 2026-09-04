@@ -677,7 +677,7 @@
     "CR-003": {
       "module": "AUTH",
       "path": "docs\\implementation\\AUTH\\change-records\\CR-003.md",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "raised_by": "Bhargav",
       "date": "2026-09-04",
       "tier": "trd",
@@ -686,7 +686,13 @@
       ],
       "change_task": "TASK-AUTH-003",
       "change_summary": "TRD never tagged its testable technical requirements with TRD-AUTH-NNN IDs, blocking 50b's traceability table",
-      "approvals": []
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04"
+        }
+      ]
     }
   },
   "risk_register": [
