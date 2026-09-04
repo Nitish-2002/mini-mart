@@ -605,3 +605,14 @@ Hash:        00ad183eef60…
 - [ ] All changes listed in CR-004 ## Change Summary are applied
 - [ ] CR-004 approved via `/daksh approve CR-004`
 - [ ] Patched docs pass `/daksh preflight`
+
+
+#### TASK-AUTH-024: [CR-005] trd.md never documented an endpoint for Admin's agent approve/reject/deactivate/reactivate actions
+- **Depends on:** none
+- **Decision budget:** 30 min
+- **Status:** todo
+
+**Acceptance criteria:**
+- [ ] All changes listed in CR-005 ## Change Summary are applied
+- [ ] CR-005 approved via `/daksh approve CR-005`
+- [ ] Patched docs pass `/daksh preflight`
