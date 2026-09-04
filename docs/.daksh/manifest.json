@@ -594,15 +594,35 @@
       ]
     },
     "50c:AUTH": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "tasks",
       "output": "docs/implementation/AUTH/tasks.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\AUTH\\tasks.md": "22b5696cf0f36626d1ff642ed5182d89d822110755740632adc7a23bf7f73e6a"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\tasks.md": "22b5696cf0f36626d1ff642ed5182d89d822110755740632adc7a23bf7f73e6a"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-04",
+          "note": "First-author: AUTH Tasks drafted \u2014 19 tickets (69 points) under milestone-04, all 42 TEST-AUTH-NNN IDs preserved in at least one task, all TRD contract gates (5a/5b/6a/API schema) passed without needing a contract-hardening task, registered in manifest.traceability with Task-as-child-of-Test links. Short hash: BEFKu4ngiM."
+        },
+        {
+          "date": "2026-09-04",
+          "note": "Spelled out every TEST-AUTH-NNN ID individually instead of range notation (through), which the approval gate's traceability scan doesn't expand. Short hash: 9wKci3svHg."
+        }
+      ]
     },
     "50d:AUTH": {
       "status": "not_started",
@@ -652,7 +672,9 @@
     },
     "TEST-AUTH-001": {
       "parent": "TRD-AUTH-002",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -660,7 +682,9 @@
     },
     "TEST-AUTH-002": {
       "parent": "TRD-AUTH-003",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -668,7 +692,9 @@
     },
     "TEST-AUTH-003": {
       "parent": "TRD-AUTH-015",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -676,7 +702,9 @@
     },
     "TEST-AUTH-004": {
       "parent": "decision-70",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -684,7 +712,9 @@
     },
     "TEST-AUTH-005": {
       "parent": "decision-81",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -692,7 +722,9 @@
     },
     "TEST-AUTH-006": {
       "parent": "CR-002",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -704,7 +736,9 @@
         "SY-AUTH-001",
         "TRD-AUTH-007"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-006"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -715,7 +749,9 @@
         "SS-AUTH-001",
         "SY-AUTH-002"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-007"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -727,7 +763,9 @@
         "SY-AUTH-003",
         "TRD-AUTH-009"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-007"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -739,7 +777,9 @@
         "SY-AUTH-001",
         "TRD-AUTH-005"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-006"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -750,7 +790,9 @@
         "SS-AUTH-001",
         "SY-AUTH-004"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-007"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -762,7 +804,9 @@
         "SY-AUTH-005",
         "TRD-AUTH-014"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-008"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -776,7 +820,9 @@
         "SY-AUTH-008",
         "TRD-AUTH-011"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-009"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -784,7 +830,9 @@
     },
     "TEST-AUTH-014": {
       "parent": "TRD-AUTH-001",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -797,7 +845,9 @@
         "SY-AUTH-010",
         "TRD-AUTH-002"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-010"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -809,7 +859,9 @@
         "SY-AUTH-011",
         "TRD-AUTH-007"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-011"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -820,7 +872,9 @@
         "SS-AUTH-004",
         "SY-AUTH-012"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-011"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -832,7 +886,9 @@
         "SY-AUTH-012",
         "TRD-AUTH-008"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-011"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -844,7 +900,9 @@
         "SY-AUTH-013",
         "TRD-AUTH-004"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-012"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -856,7 +914,9 @@
         "SY-AUTH-008",
         "SY-AUTH-014"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-012"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -867,7 +927,9 @@
         "SS-AUTH-005",
         "TRD-AUTH-013"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-012"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -878,7 +940,9 @@
         "SS-AUTH-001",
         "SY-AUTH-001"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -890,7 +954,9 @@
         "SY-AUTH-002",
         "SY-AUTH-003"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -902,7 +968,9 @@
         "SY-AUTH-005",
         "TRD-AUTH-014"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -910,7 +978,9 @@
     },
     "TEST-AUTH-025": {
       "parent": "SS-AUTH-002",
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -922,7 +992,9 @@
         "SY-AUTH-009",
         "SY-AUTH-010"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -934,7 +1006,9 @@
         "SY-AUTH-011",
         "TRD-AUTH-010"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -945,7 +1019,9 @@
         "SS-AUTH-004",
         "SY-AUTH-012"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -956,7 +1032,9 @@
         "SS-AUTH-005",
         "TRD-AUTH-013"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-017"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -964,7 +1042,10 @@
     },
     "TEST-AUTH-030": {
       "parent": "SS-AUTH-001",
-      "children": [],
+      "children": [
+        "TASK-AUTH-013",
+        "TASK-AUTH-018"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -972,7 +1053,10 @@
     },
     "TEST-AUTH-031": {
       "parent": "SS-AUTH-002",
-      "children": [],
+      "children": [
+        "TASK-AUTH-014",
+        "TASK-AUTH-018"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -980,7 +1064,10 @@
     },
     "TEST-AUTH-032": {
       "parent": "SS-AUTH-004",
-      "children": [],
+      "children": [
+        "TASK-AUTH-015",
+        "TASK-AUTH-018"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -991,7 +1078,10 @@
         "SS-AUTH-005",
         "DS-AUTH-011"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-016",
+        "TASK-AUTH-018"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1004,7 +1094,10 @@
         "DS-AUTH-002",
         "DS-AUTH-003"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-013",
+        "TASK-AUTH-019"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1017,7 +1110,10 @@
         "DS-AUTH-005",
         "DS-AUTH-006"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-014",
+        "TASK-AUTH-019"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1032,7 +1128,10 @@
         "DS-AUTH-009",
         "DS-AUTH-010"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-015",
+        "TASK-AUTH-019"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1044,7 +1143,10 @@
         "DS-AUTH-011",
         "DS-AUTH-012"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-016",
+        "TASK-AUTH-019"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1052,7 +1154,9 @@
     },
     "TEST-AUTH-038": {
       "parent": "TRD-AUTH-012",
-      "children": [],
+      "children": [
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1060,7 +1164,9 @@
     },
     "TEST-AUTH-039": {
       "parent": "risk-auth-email-outage",
-      "children": [],
+      "children": [
+        "TASK-AUTH-022"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1071,7 +1177,9 @@
         "SS-AUTH-005",
         "SY-AUTH-013"
       ],
-      "children": [],
+      "children": [
+        "TASK-AUTH-021"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1079,7 +1187,9 @@
     },
     "TEST-AUTH-041": {
       "parent": "system.md#module-quality-budgets",
-      "children": [],
+      "children": [
+        "TASK-AUTH-021"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
@@ -1087,11 +1197,228 @@
     },
     "TEST-AUTH-042": {
       "parent": "TRD-AUTH-006",
-      "children": [],
+      "children": [
+        "TASK-AUTH-010",
+        "TASK-AUTH-020"
+      ],
       "stage": "50b",
       "module": "AUTH",
       "tier": "tracked",
       "status": "designed"
+    },
+    "TASK-AUTH-004": {
+      "parent": [],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-005": {
+      "parent": [],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-006": {
+      "parent": [
+        "TEST-AUTH-007",
+        "TEST-AUTH-010"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-007": {
+      "parent": [
+        "TEST-AUTH-008",
+        "TEST-AUTH-009",
+        "TEST-AUTH-011"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-008": {
+      "parent": "TEST-AUTH-012",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-009": {
+      "parent": "TEST-AUTH-013",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-010": {
+      "parent": [
+        "TEST-AUTH-015",
+        "TEST-AUTH-042"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-011": {
+      "parent": [
+        "TEST-AUTH-016",
+        "TEST-AUTH-017",
+        "TEST-AUTH-018"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-012": {
+      "parent": [
+        "TEST-AUTH-019",
+        "TEST-AUTH-020",
+        "TEST-AUTH-021"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-013": {
+      "parent": [
+        "TEST-AUTH-030",
+        "TEST-AUTH-034"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-014": {
+      "parent": [
+        "TEST-AUTH-031",
+        "TEST-AUTH-035"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-015": {
+      "parent": [
+        "TEST-AUTH-032",
+        "TEST-AUTH-036"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-016": {
+      "parent": [
+        "TEST-AUTH-033",
+        "TEST-AUTH-037"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-017": {
+      "parent": [
+        "TEST-AUTH-022",
+        "TEST-AUTH-023",
+        "TEST-AUTH-024",
+        "TEST-AUTH-025",
+        "TEST-AUTH-026",
+        "TEST-AUTH-027",
+        "TEST-AUTH-028",
+        "TEST-AUTH-029"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-018": {
+      "parent": [
+        "TEST-AUTH-030",
+        "TEST-AUTH-031",
+        "TEST-AUTH-032",
+        "TEST-AUTH-033"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-019": {
+      "parent": [
+        "TEST-AUTH-034",
+        "TEST-AUTH-035",
+        "TEST-AUTH-036",
+        "TEST-AUTH-037"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-020": {
+      "parent": [
+        "TEST-AUTH-001",
+        "TEST-AUTH-002",
+        "TEST-AUTH-003",
+        "TEST-AUTH-004",
+        "TEST-AUTH-005",
+        "TEST-AUTH-006",
+        "TEST-AUTH-014",
+        "TEST-AUTH-038",
+        "TEST-AUTH-042"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-021": {
+      "parent": [
+        "TEST-AUTH-040",
+        "TEST-AUTH-041"
+      ],
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
+    },
+    "TASK-AUTH-022": {
+      "parent": "TEST-AUTH-039",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "tier": "tracked",
+      "status": "todo"
     }
   },
   "change_records": {
