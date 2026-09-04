@@ -21,7 +21,7 @@
       "name": "Bhargav (Client)",
       "role": "Client",
       "email": "bhargavballa074@gmail.com",
-      "note": "Same person as the PTL roster entry above, representing Mini Mart's own client/business-owner sign-off — this project has no separate client stakeholder. Used only to give brd/roadmap-tier change records a genuine second-hat confirmation, not a rubber stamp by a different person."
+      "note": "Same person as the PTL roster entry above, representing Mini Mart's own client/business-owner sign-off \u00e2\u20ac\u201d this project has no separate client stakeholder. Used only to give brd/roadmap-tier change records a genuine second-hat confirmation, not a rubber stamp by a different person."
     }
   ],
   "modules": [
@@ -408,20 +408,33 @@
       "revision_history": []
     },
     "30c:AUTH": {
-      "status": "in_progress",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "solution-spec",
       "output": "docs/implementation/AUTH/solution.md",
       "inherited_ref": null,
       "locked_by": null,
       "doc_hash": {
-        "docs\\implementation\\AUTH\\solution.md": "fae1a52b1b3d4033711f8744f3e66c35db88c0fd92ea306ebac6f3f4322f3f5b"
+        "docs\\implementation\\AUTH\\solution.md": "e14846088735fba47d989933471d84d8a11ebee76fd825a194ca4e4fde5bc278"
       },
-      "approvals": [],
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04",
+          "doc_hash": {
+            "docs\\implementation\\AUTH\\solution.md": "e14846088735fba47d989933471d84d8a11ebee76fd825a194ca4e4fde5bc278"
+          }
+        }
+      ],
       "revision_history": [
         {
           "date": "2026-09-03",
           "note": "First-author: AUTH Solution drafted from BRD/vision/architecture. 5 business flows (SS-AUTH-001..005), 3 decisions (cross-role identity, OTP-every-login, admin no-MFA), 3 open questions (session lifetime, rate-limit threshold, deactivation-reassignment interaction). Short hash: xUU92aAJx8."
+        },
+        {
+          "date": "2026-09-04",
+          "note": "Resolved all 3 open questions after a follow-up round: 7-day session lifetime (decision-52), 5 OTP requests/hour/email rate limit (decision-53), agent deactivation auto-flags in-flight orders for manual reassignment rather than auto-reassigning or blocking (decision-54). Short hash: ZhKLGQDCvI."
         }
       ]
     },

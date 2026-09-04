@@ -38,10 +38,13 @@ Decisions:
   - decision-49 :: Same email may hold both an End User and a Delivery Agent identity | kind: decision | summary: "AUTH doesn't enforce cross-role email uniqueness — a person can be a shopper and a delivery agent under the same email, as two separate account records." | spec: [Business States, Decisions, and Recovery](solution.md#business-states-decisions-and-recovery) | alternatives: "Block cross-role reuse, requiring a distinct email per role — rejected; adds a real validation rule with no business reason surfaced yet to justify it." | reversal_trigger: "A real conflict emerges from one person holding both identities (e.g. confusion in notifications, or a fraud pattern) that the simpler model doesn't handle."
   - decision-50 :: OTP is required on every login, no persistent device skip | kind: decision | summary: "There is no \"remember this device\" shortcut in Phase 1 — End User and Delivery Agent verify by OTP every time they log in, not just at first signup." | spec: [Business-Flow Inventory](solution.md#business-flow-inventory) | alternatives: "A longer-lived session or device-trust cookie that skips repeat OTP entry — rejected for Phase 1; adds real complexity (secure device-token storage, revocation) with no evidence yet that repeat-OTP friction is a real problem." | reversal_trigger: "Repeat-login friction becomes a measured drop-off point after launch."
   - decision-51 :: Admin login is password-only, no second factor | kind: decision | summary: "The single Admin account authenticates by password alone in Phase 1 — no OTP or other second factor layered on top." | spec: [Business-Flow Inventory](solution.md#business-flow-inventory) | alternatives: "Add email OTP as a second factor, reusing ss-auth-001's mechanism — more secure for the single most powerful account in the system, but adds a step to every admin login with no specific threat identified yet to justify it." | reversal_trigger: "A real, specific security concern about the Admin account surfaces after launch."
+  - decision-52 :: Session lifetime is 7 days | kind: decision | summary: "A verified session (End User, Delivery Agent, or Admin) lasts 7 days before requiring re-authentication." | spec: [Handoff Boundaries](solution.md#handoff-boundaries) | alternatives: "Shorter (hours/same-day) — tighter security, but re-verifying via OTP that often adds real friction for repeat customers and daily-active agents. Longer (30+ days / until logout) — minimal friction, but a lost/shared device stays logged in much longer." | reversal_trigger: "A real security incident traces back to a stale 7-day session, or 7 days proves noticeably annoying in practice."
+  - decision-53 :: OTP rate limit is 5 requests per hour per email | kind: decision | summary: "No more than 5 OTP requests per hour are honored for a given email — generous enough for someone who fumbles a code, tight enough to blunt automated abuse driving up email cost." | spec: [Handoff Boundaries](solution.md#handoff-boundaries) | alternatives: "A different threshold wasn't specifically requested; 5/hour is a reasonable default given no stated reason to deviate." | reversal_trigger: "Real usage shows legitimate users hitting the limit, or abuse getting through under it."
+  - decision-54 :: Deactivating an agent auto-flags their in-flight order, doesn't auto-reassign or block | kind: decision | summary: "If admin deactivates an agent with an order already assigned or picked up, the order is immediately surfaced to admin as needing attention — using the existing manual reassignment flow (UC-008), not a new automatic one." | spec: [Business-Flow Inventory](solution.md#business-flow-inventory) | alternatives: "Fully automatic reassignment — faster, but risky if the picked-up items/cash state isn't cleanly handed off to a system that can't see it. Blocking deactivation until orders resolve — rejected; would prevent cutting off an agent urgently (e.g. for misconduct) exactly when admin most needs to." | reversal_trigger: "Manual flagging proves too slow in practice, e.g. admin misses the flag and a delivery stalls."
 OpenQuestions:
-  - oq-40 :: Session/token lifetime | kind: openquestion | summary: "How long does a verified session (End User, Delivery Agent, or Admin) last before requiring re-authentication? Architecture fixed JWT as the mechanism (decision-35, system-architecture.md) but not the lifetime." | spec: [Open Questions](solution.md#open-questions)
-  - oq-41 :: OTP rate-limiting threshold | kind: openquestion | summary: "BRD's NFR-3 requires OTP requests to be rate-limited, but no concrete threshold (e.g. max requests per hour per email) has been set." | spec: [Open Questions](solution.md#open-questions)
-  - oq-42 :: Does agent deactivation auto-trigger reassignment of in-flight orders? | kind: openquestion | summary: "FR-029 (CR-001) lets admin deactivate an approved agent, but doesn't say whether deactivating an agent with an active in-flight order automatically triggers UC-008's reassignment flow, or leaves it for admin to notice and act on separately." | spec: [Open Questions](solution.md#open-questions)
+  - oq-40 :: Session/token lifetime | kind: openquestion | summary: "How long does a session last before requiring re-authentication? — resolved, see decision-52." | spec: [AUTH Decisions](solution.md#auth-decisions)
+  - oq-41 :: OTP rate-limiting threshold | kind: openquestion | summary: "What's the OTP rate-limiting threshold? — resolved, see decision-53." | spec: [AUTH Decisions](solution.md#auth-decisions)
+  - oq-42 :: Does agent deactivation auto-trigger reassignment of in-flight orders? | kind: openquestion | summary: "Does deactivating an agent auto-reassign their in-flight orders? — resolved, see decision-54." | spec: [AUTH Decisions](solution.md#auth-decisions)
 user-02 -> ss-auth-001 | relation: experiences
 user-02 -> ss-auth-002 | relation: experiences
 user-03 -> ss-auth-001 | relation: experiences
@@ -51,12 +54,18 @@ user-01 -> ss-auth-004 | relation: owns
 decision-49 -> ss-auth-001 | relation: governs
 decision-50 -> ss-auth-001 | relation: governs
 decision-51 -> ss-auth-003 | relation: governs
+decision-52 -> oq-40 | relation: decides
+decision-53 -> oq-41 | relation: decides
+decision-54 -> oq-42 | relation: decides
+decision-52 -> ss-auth-005 | relation: governs
+decision-53 -> ss-auth-001 | relation: governs
+decision-54 -> ss-auth-002 | relation: governs
 ```
 
 </details>
 
 > [!note]
-> This graph carries 14 nodes across 4 groups — thinner than the 30-node floor other stages hit, consistent with how thin `system-architecture.md` and `implementation-roadmap.md` also ran: a single module's Solution spec has less raw material than a project-wide BRD or Architecture. `Users` are reused from the BRD by the same IDs. `ss-auth-005` (session issuance) has no `User` edges — it's genuinely invisible infrastructure no human directly experiences, so leaving it edge-less is more honest than forcing one.
+> This graph carries 17 nodes across 4 groups — thinner than the 30-node floor other stages hit, consistent with how thin `system-architecture.md` and `implementation-roadmap.md` also ran: a single module's Solution spec has less raw material than a project-wide BRD or Architecture. `Users` are reused from the BRD by the same IDs. `ss-auth-005` (session issuance) has no `User` edges — it's genuinely invisible infrastructure no human directly experiences, so leaving it edge-less is more honest than forcing one. All 3 original open questions resolved into `decision-52` through `decision-54` in a follow-up round.
 
 ## Scope and BRD Lineage
 
@@ -114,16 +123,23 @@ Failure and recovery intent, in business terms (not error codes or schemas):
 
 **To stage 40 (Experience Design, selected for AUTH per [decision-44](../../implementation-roadmap.md#build-order)):** every screen implied by the five flows above — email entry, OTP entry, agent registration form, Admin login, Admin password-reset request/confirm — plus how errors (wrong OTP, rejected agent, wrong Admin password) actually read to the user. Design also owns whether/how the End User and Delivery Agent share visual/interaction patterns for [SS-AUTH-001](#), since it's the same underlying flow for both roles.
 
-**To stage 30d (System, required):** the exact state machine for Delivery Agent status transitions (who can trigger `deactivated`, whether it's reversible back to `approved`); concrete validation rules (what makes an email or password valid); the precise shape of a session/token; and resolving [oq-40](#) and [oq-41](#)'s numeric thresholds into real values.
+**To stage 30d (System, required):** the exact state machine for Delivery Agent status transitions (who can trigger `deactivated`, whether it's reversible back to `approved`); concrete validation rules (what makes an email or password valid); the precise shape of a session/token carrying the 7-day lifetime ([decision-52](#)) and the 5-per-hour OTP limit ([decision-53](#)); and the mechanics of how a deactivated agent's in-flight order gets flagged to admin ([decision-54](#)).
+
+## AUTH Decisions
+
+The 3 open questions this stage's first draft raised were closed in a follow-up round with the same stakeholder.
+
+1. **Sessions last 7 days before requiring re-authentication** ([decision-52](#)) — balances friction against exposure for a consumer app at this scale. Revisit if a stale session causes a real incident, or 7 days proves annoying in practice.
+2. **OTP requests are capped at 5 per hour per email** ([decision-53](#)) — generous for a fumbled code, tight enough to blunt automated abuse. Revisit if legitimate users hit it or abuse gets through under it.
+3. **Deactivating an agent auto-flags their in-flight order for admin to manually reassign** ([decision-54](#)) — no silent auto-reassignment, no blocking the deactivation itself. Revisit if manual flagging proves too slow in practice.
 
 ## Open Questions
 
-1. **How long does a session last before requiring re-authentication?** ([oq-40](#)) Architecture fixed JWT as the mechanism; not the lifetime.
-2. **What's the OTP rate-limiting threshold?** ([oq-41](#)) BRD requires it exist (NFR-3); no concrete number set.
-3. **Does deactivating an agent auto-trigger reassignment of their in-flight orders?** ([oq-42](#)) FR-029 added the capability; the interaction with UC-008's reassignment flow isn't specified.
+None remain open from this Solution draft — all 3 were resolved in the follow-up above; see [AUTH Decisions](#auth-decisions).
 
 ## Approval
 
-Approved by:
-Role:
-Date:
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Hash:        968b80c7ea89�
