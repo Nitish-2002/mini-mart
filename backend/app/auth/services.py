@@ -355,3 +355,16 @@ async def update_agent_status(
     )
     await session.commit()
     return new_status
+
+
+async def get_agent_status(session: AsyncSession, agent_id: uuid.UUID) -> str:
+    """Backs `GET /v1/auth/agent/status` (trd.md API Contracts) — the caller's
+    own status, read via the session's own principal.user_id, never another
+    agent's (BRD NFR-5's PII-scoping note in trd.md's Security Design).
+    """
+    agent = (
+        await session.execute(select(AuthDeliveryAgent).where(AuthDeliveryAgent.id == agent_id))
+    ).scalar_one_or_none()
+    if agent is None:
+        raise AgentNotFound()
+    return agent.status

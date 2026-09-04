@@ -125,6 +125,18 @@ async def agent_status_update(
     return AgentStatusUpdateOut(status=new_status)
 
 
+@router.get("/agent/status", response_model=AgentStatusUpdateOut)
+async def agent_status(
+    principal: Principal = Depends(require_role("delivery_agent")),
+    session: AsyncSession = Depends(get_session),
+) -> AgentStatusUpdateOut:
+    # Deliberately require_role, not require_approved_agent: a pending or
+    # rejected agent must still be able to read their own status
+    # (ss-auth-agent-status's whole purpose is answering that question).
+    status = await services.get_agent_status(session, principal.user_id)
+    return AgentStatusUpdateOut(status=status)
+
+
 @router.post(
     "/admin/login",
     response_model=AdminLoginOut,
