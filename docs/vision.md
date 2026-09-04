@@ -192,4 +192,4 @@ None remain open from this vision draft â€” all 9 were resolved in the follow-up
 Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-03
-Hash:        c6b90c9544bb…
+Hash:        c6b90c9544bb

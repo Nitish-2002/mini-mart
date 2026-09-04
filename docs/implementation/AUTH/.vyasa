@@ -1,1 +1,1 @@
-order = ["solution.md", "system.md", "trd.md", "test-specification.md", "tasks.md"]
+order = ["solution.md", "system.md", "experience-design.md", "trd.md", "test-specification.md", "tasks.md"]
