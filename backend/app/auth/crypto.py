@@ -8,7 +8,24 @@ import hashlib
 import hmac
 import secrets
 
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
+
 from app.auth.config import auth_settings
+
+_password_hasher = PasswordHasher()
+
+
+def hash_password(password: str) -> str:
+    """decision-68: Argon2id — the one password AUTH stores (Admin's)."""
+    return _password_hasher.hash(password)
+
+
+def verify_password(password: str, password_hash: str) -> bool:
+    try:
+        return _password_hasher.verify(password_hash, password)
+    except VerifyMismatchError:
+        return False
 
 
 def generate_otp_code() -> str:

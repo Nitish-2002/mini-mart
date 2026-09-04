@@ -56,6 +56,16 @@ class AgentStatusUpdateOut(BaseModel):
     status: AgentStatus
 
 
+class AdminLoginIn(BaseModel):
+    username: str
+    password: str
+
+
+class AdminLoginOut(BaseModel):
+    # CR-004: no session_token field — delivered exclusively via Set-Cookie.
+    expires_at: str
+
+
 class ErrorOut(BaseModel):
     error: str
     retry_after_seconds: int | None = None

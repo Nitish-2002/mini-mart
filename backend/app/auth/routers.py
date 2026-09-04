@@ -1,12 +1,14 @@
 import uuid
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import services
 from app.auth.dependencies import Principal, get_current_user, require_role
 from app.auth.schemas import (
+    AdminLoginIn,
+    AdminLoginOut,
     AgentRegisterIn,
     AgentRegisterOut,
     AgentStatusUpdateIn,
@@ -19,6 +21,7 @@ from app.auth.schemas import (
 )
 from app.auth.session import IssuedSession, clear_session_cookie, revoke_session, set_session_cookie
 from app.core.db import get_session
+from app.core.rate_limit import limiter
 
 # Prefix matches interface-01 BACKEND_API's /v1/auth/* route group
 # (system-architecture.md).
@@ -118,6 +121,31 @@ async def agent_status_update(
             content=ErrorOut(error="invalid_transition").model_dump(exclude_none=True),
         )
     return AgentStatusUpdateOut(status=new_status)
+
+
+@router.post(
+    "/admin/login",
+    response_model=AdminLoginOut,
+    responses={401: {"model": ErrorOut}, 429: {"model": ErrorOut}},
+)
+@limiter.limit("10/15minutes")  # decision-73: per-IP, defense-in-depth, not account lockout
+async def admin_login(
+    request: Request,
+    body: AdminLoginIn,
+    response: Response,
+    session: AsyncSession = Depends(get_session),
+) -> AdminLoginOut | JSONResponse:
+    try:
+        result = await services.admin_login(session, body.username, body.password)
+    except services.InvalidCredentials:
+        return JSONResponse(
+            status_code=401,
+            content=ErrorOut(error="invalid_credentials").model_dump(exclude_none=True),
+        )
+    set_session_cookie(
+        response, IssuedSession(token=result.session_token, expires_at=result.expires_at)
+    )
+    return AdminLoginOut(expires_at=result.expires_at.isoformat())
 
 
 @router.post("/logout", status_code=204)

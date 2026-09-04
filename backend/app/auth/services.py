@@ -4,6 +4,7 @@ flows, plus the get_current_user()/require_role() authorization dependency
 exist.
 """
 
+import secrets
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -13,7 +14,13 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import crypto, email, session as session_module
-from app.auth.models import AuthAgentStatusLog, AuthDeliveryAgent, AuthEndUser, AuthOtpCode
+from app.auth.models import (
+    AuthAdminAccount,
+    AuthAgentStatusLog,
+    AuthDeliveryAgent,
+    AuthEndUser,
+    AuthOtpCode,
+)
 
 # sm-auth-agent-status's closed transition table (trd.md §5b) — the only
 # valid (current_status, action) -> new_status moves. Anything else is
@@ -61,6 +68,16 @@ class AgentNotFound(Exception):
 
 class InvalidTransition(Exception):
     pass
+
+
+class InvalidCredentials(Exception):
+    pass
+
+
+@dataclass(frozen=True)
+class AdminLoginResult:
+    session_token: str
+    expires_at: datetime
 
 
 @dataclass(frozen=True)
@@ -206,6 +223,32 @@ async def register_agent(session: AsyncSession, name: str, phone: str, agent_ema
     except IntegrityError:
         await session.rollback()
         raise EmailAlreadyRegistered() from None
+
+
+# A precomputed hash of a value nobody will ever type, spent purely so a
+# missing-username lookup pays the same Argon2 cost as a real-username wrong-
+# password check — otherwise a missing username would respond measurably
+# faster, leaking username existence via timing despite the identical 401
+# body (system.md's Failure Shape / decision-77's enumeration-resistance
+# principle, extended to a side channel the response body itself can't hide).
+_DUMMY_PASSWORD_HASH = crypto.hash_password(secrets.token_urlsafe(32))
+
+
+async def admin_login(session: AsyncSession, username: str, password: str) -> AdminLoginResult:
+    admin = (
+        await session.execute(select(AuthAdminAccount).where(AuthAdminAccount.username == username))
+    ).scalar_one_or_none()
+
+    if admin is None:
+        crypto.verify_password(password, _DUMMY_PASSWORD_HASH)  # timing parity, see above
+        raise InvalidCredentials()
+
+    if not crypto.verify_password(password, admin.password_hash):
+        raise InvalidCredentials()
+
+    issued = await session_module.issue_session(session, "admin", admin.id)
+    await session.commit()
+    return AdminLoginResult(session_token=issued.token, expires_at=issued.expires_at)
 
 
 async def update_agent_status(
