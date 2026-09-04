@@ -3,7 +3,15 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import services
-from app.auth.schemas import ErrorOut, OtpRequestIn, OtpRequestOut, OtpVerifyIn, OtpVerifyOut
+from app.auth.schemas import (
+    AgentRegisterIn,
+    AgentRegisterOut,
+    ErrorOut,
+    OtpRequestIn,
+    OtpRequestOut,
+    OtpVerifyIn,
+    OtpVerifyOut,
+)
 from app.core.db import get_session
 
 # Prefix matches interface-01 BACKEND_API's /v1/auth/* route group
@@ -58,3 +66,22 @@ async def otp_verify(
         role=result.role,
         expires_at=result.expires_at.isoformat(),
     )
+
+
+@router.post(
+    "/agent/register",
+    response_model=AgentRegisterOut,
+    status_code=201,
+    responses={409: {"model": ErrorOut}},
+)
+async def agent_register(
+    body: AgentRegisterIn, session: AsyncSession = Depends(get_session)
+) -> AgentRegisterOut | JSONResponse:
+    try:
+        await services.register_agent(session, body.name, body.phone, body.email, body.photo_url)
+    except services.EmailAlreadyRegistered:
+        return JSONResponse(
+            status_code=409,
+            content=ErrorOut(error="email_already_registered").model_dump(exclude_none=True),
+        )
+    return AgentRegisterOut(status="pending_approval")

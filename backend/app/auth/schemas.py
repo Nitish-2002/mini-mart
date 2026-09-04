@@ -33,6 +33,17 @@ class OtpVerifyOut(BaseModel):
     expires_at: str
 
 
+class AgentRegisterIn(BaseModel):
+    name: str
+    phone: str
+    email: EmailStr
+    photo_url: str
+
+
+class AgentRegisterOut(BaseModel):
+    status: Literal["pending_approval"]
+
+
 class ErrorOut(BaseModel):
     error: str
     retry_after_seconds: int | None = None

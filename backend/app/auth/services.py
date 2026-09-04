@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth import crypto, email, session as session_module
@@ -36,6 +37,10 @@ class InvalidCode(Exception):
 
 
 class CodeExpired(Exception):
+    pass
+
+
+class EmailAlreadyRegistered(Exception):
     pass
 
 
@@ -165,3 +170,20 @@ async def _get_delivery_agent_id(session: AsyncSession, otp_email: str):
         )
     ).scalar_one_or_none()
     return agent.id if agent is not None else None
+
+
+async def register_agent(session: AsyncSession, name: str, phone: str, agent_email: str, photo_url: str) -> None:
+    """TRD-AUTH-014: relies on auth_delivery_agents.email's DB-level UNIQUE
+    constraint (trd.md §5a) rather than a check-then-insert, so a race
+    between two concurrent registrations for the same email can't slip
+    through — the second one always loses to the constraint, not a timing
+    window. photo_url is accepted as-is: this endpoint never touches
+    OBJECT_STORAGE itself, only stores the URL the frontend already uploaded to.
+    """
+    agent = AuthDeliveryAgent(name=name, phone=phone, email=agent_email, photo_url=photo_url)
+    session.add(agent)
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise EmailAlreadyRegistered() from None
