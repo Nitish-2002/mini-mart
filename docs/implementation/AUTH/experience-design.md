@@ -207,13 +207,15 @@ These are frontend-facing mock contracts — stable field names and representati
 
 | Endpoint (mock) | Request | Success response | Error/empty variants | Traces to |
 |---|---|---|---|---|
-| `POST /v1/auth/otp/request` | `{ "email": "shopper@example.com" }` | `202 { "cooldown_seconds": 60, "expires_in_seconds": 600 }` | `429 { "error": "rate_limited", "retry_after_seconds": 1800 }` (drives [ds-auth-003](#)) | [dm-otpcode](system.md#data-models) |
-| `POST /v1/auth/otp/verify` | `{ "email": "shopper@example.com", "code": "482913" }` | `200 { "session_token": "...", "role": "end_user", "expires_at": "2026-09-11T10:00:00Z" }` | `401 { "error": "invalid_code" }` (inline on [ds-auth-002](#)); `410 { "error": "code_expired" }` | [dm-otpcode](system.md#data-models), [dm-session](system.md#data-models) |
+| `POST /v1/auth/otp/request` | `{ "email": "shopper@example.com", "role": "end_user" }` | `202 { "cooldown_seconds": 60, "expires_in_seconds": 600 }` | `429 { "error": "rate_limited", "retry_after_seconds": 1800 }` (drives [ds-auth-003](#)) | [dm-otpcode](system.md#data-models) |
+| `POST /v1/auth/otp/verify` | `{ "email": "shopper@example.com", "code": "482913", "role": "end_user" }` | `200 { "session_token": "...", "role": "end_user", "expires_at": "2026-09-11T10:00:00Z" }` | `401 { "error": "invalid_code" }` (inline on [ds-auth-002](#)); `410 { "error": "code_expired" }` | [dm-otpcode](system.md#data-models), [dm-session](system.md#data-models) |
 | `POST /v1/auth/agent/register` | `{ "name": "Ravi Teja", "phone": "+919876543210", "email": "ravi.teja@gmail.com", "photo_url": "..." }` | `201 { "status": "pending_approval" }` | `409 { "error": "email_already_registered" }` | [dm-deliveryagent](system.md#data-models) |
 | `GET /v1/auth/agent/status` | — (session-scoped) | `200 { "status": "approved" }` | `200 { "status": "rejected" }` / `200 { "status": "deactivated" }` — same shape, [dc-auth-001](#) maps color | [dm-deliveryagent](system.md#data-models), [dm-agent-status-log](system.md#data-models) |
 | `POST /v1/auth/admin/login` | `{ "username": "admin", "password": "..." }` | `200 { "session_token": "...", "expires_at": "..." }` | `401 { "error": "invalid_credentials" }` (no distinction between wrong username vs password, to avoid enumeration) | [dm-adminaccount](system.md#data-models), [dm-session](system.md#data-models) |
 | `POST /v1/auth/admin/password-reset/request` | `{ "email": "admin@minimart.app" }` | `202 {}` (always this shape, whether or not the email exists — no enumeration) | none | [dm-resettoken](system.md#data-models) |
 | `POST /v1/auth/admin/password-reset/confirm` | `{ "token": "...", "new_password": "..." }` | `200 { "session_token": "..." }` | `410 { "error": "token_expired_or_used" }` (drives [ds-auth-010](#)) | [dm-resettoken](system.md#data-models) |
+
+`role` note ([CR-002](change-records/CR-002.md)): the OTP request/verify payloads carry a `role` field disambiguating which identity (End User vs Delivery Agent) an email resolves to, since the same email can hold both ([decision-49](solution.md#business-states-decisions-and-recovery)). This adds no new screen or input — the value is implicit in which frontend app is calling ([Information Architecture and Navigation](#information-architecture-and-navigation)), so [ds-auth-001](#)/[ds-auth-002](#) are unchanged.
 
 Empty-state note: no AUTH screen has a true "empty list" state — every screen is single-record (one email, one OTP, one agent status, one admin account), so the empty/error variants above are the complete set; there is no pagination or collection-empty case to design for in this module.
 
@@ -273,4 +275,9 @@ None outstanding. All 3 questions this spec originally raised were resolved duri
 Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
-Hash:        e5beb5951b19�
+Hash:        e5beb5951b19�
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Via:         CR-002

@@ -611,7 +611,7 @@
     "CR-002": {
       "module": "AUTH",
       "path": "docs\\implementation\\AUTH\\change-records\\CR-002.md",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "raised_by": "Bhargav",
       "date": "2026-09-04",
       "tier": "system",
@@ -621,7 +621,13 @@
       ],
       "change_task": "TASK-AUTH-002",
       "change_summary": "OTP request/verify need a role discriminator to resolve End User vs Delivery Agent identity under a shared email",
-      "approvals": []
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04"
+        }
+      ]
     }
   },
   "risk_register": [
