@@ -1,0 +1,98 @@
+/* Design tokens — experience-design.md's Token contract, §4A (CR-006 corrected
+   values). Every component reads these custom properties, never a literal hex. */
+:root {
+  --paper: #faf8f4;
+  --paper-raised: #ffffff;
+  --ink: #1c1b18;
+  --ink-soft: #4a473f;
+  --sand: #8c8672;
+  --sand-line: #e4e0d5;
+  --sand-fill: #f0ede4;
+  --jade: #12734f;
+  --jade-deep: #0a4f36;
+  --jade-tint: #e3f1ea;
+  --gold: #c98a2e;
+  --gold-tint: #faf0dd;
+  --brick: #ae4034;
+  --brick-tint: #f7e9e7;
+  --focus: #12734f;
+  --shadow: 0 1px 2px rgba(28, 27, 24, 0.06), 0 8px 24px -8px rgba(28, 27, 24, 0.18);
+
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --touch-target: 44px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --text-caption: 12px;
+  --text-body: 14px;
+  --text-body-lg: 16px;
+  --text-h3: 20px;
+  --text-h2: 24px;
+  --text-h1: 32px;
+}
+/* --font-body / --font-display come from next/font (see app/layout.tsx) —
+   applied via a className on <body>, not redefined here. */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #161510;
+    --paper-raised: #201f19;
+    --ink: #f2efe9;
+    --ink-soft: #c9c4b8;
+    --sand: #948e7c;
+    --sand-line: #3a382f;
+    --sand-fill: #211f19;
+    --jade: #2fa578;
+    --jade-deep: #3fc290;
+    --jade-tint: #1b2b23;
+    --gold: #e0a748;
+    --gold-tint: #2b2416;
+    --brick: #d9695b;
+    --brick-tint: #2e1c19;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 28px -10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+a {
+  color: var(--jade);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

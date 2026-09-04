@@ -1,0 +1,47 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 var(--text-caption) / 1 var(--font-body);
+  letter-spacing: 0.02em;
+  padding: 6px 11px;
+  border-radius: 999px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.pending {
+  background: var(--gold-tint);
+  color: var(--gold);
+}
+.pending .dot {
+  background: var(--gold);
+}
+
+.approved {
+  background: var(--jade-tint);
+  color: var(--jade);
+}
+.approved .dot {
+  background: var(--jade);
+}
+
+.deactivated {
+  background: var(--sand-fill);
+  color: var(--sand);
+}
+.deactivated .dot {
+  background: var(--sand);
+}
+
+.rejected {
+  background: var(--brick-tint);
+  color: var(--brick);
+}
+.rejected .dot {
+  background: var(--brick);
+}

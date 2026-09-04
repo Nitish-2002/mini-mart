@@ -1,0 +1,44 @@
+.row {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.box {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font: 600 var(--text-h3) / 1 var(--font-body);
+  color: var(--ink);
+  background: var(--paper-raised);
+  border: 1.5px solid var(--sand-line);
+  border-radius: var(--radius-control);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.box:focus {
+  outline: none;
+  border-color: var(--jade);
+  box-shadow: 0 0 0 3px var(--jade-tint);
+}
+
+.box.error {
+  animation: flash 0.3s ease;
+  border-color: var(--brick);
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    border-color: var(--brick);
+  }
+  50% {
+    border-color: var(--sand-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box.error {
+    animation: none;
+  }
+}
