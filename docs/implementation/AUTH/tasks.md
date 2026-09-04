@@ -594,3 +594,14 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
 Hash:        00ad183eef60…
+
+
+#### TASK-AUTH-023: [CR-004] Session delivery must be httpOnly-cookie-only, not also echoed in the JSON response body, to actually get decision-35's XSS protection
+- **Depends on:** none
+- **Decision budget:** 30 min
+- **Status:** todo
+
+**Acceptance criteria:**
+- [ ] All changes listed in CR-004 ## Change Summary are applied
+- [ ] CR-004 approved via `/daksh approve CR-004`
+- [ ] Patched docs pass `/daksh preflight`
