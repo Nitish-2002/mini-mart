@@ -1617,7 +1617,7 @@
     "CR-007": {
       "module": "AUTH",
       "path": "docs\\implementation\\AUTH\\change-records\\CR-007.md",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "raised_by": "Bhargav",
       "date": "2026-09-04",
       "tier": "design",
@@ -1626,7 +1626,13 @@
       ],
       "change_task": "TASK-AUTH-026",
       "change_summary": "FRONTEND_AGENT's routes were never namespaced, colliding with FRONTEND_STOREFRONT's identical bare paths in the same one-deployable app",
-      "approvals": []
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04"
+        }
+      ]
     }
   },
   "risk_register": [

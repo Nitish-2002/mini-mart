@@ -184,18 +184,18 @@ metric-a11y-contrast -> constraint-a11y | relation: watches
 
 ## Information Architecture and Navigation
 
-AUTH's three roles live in three separate frontend applications (`FRONTEND_STOREFRONT`, `FRONTEND_AGENT`, `FRONTEND_ADMIN` — [system-architecture.md](../../system-architecture.md#components)), so navigation is scoped by which app the person opened, not inferred from a single shared login screen. This matters because [decision-49](solution.md#auth-decisions) lets the same email hold both an End User and a Delivery Agent identity — the app boundary, not the login form, decides which role's screens follow a successful OTP verify.
+AUTH's three roles are served by three role-scoped route groups within **one** Next.js deployable (CR-007) — `FRONTEND_STOREFRONT`, `FRONTEND_AGENT`, `FRONTEND_ADMIN` — [system-architecture.md](../../system-architecture.md#frontend-architecture), not three separate applications; navigation is scoped by URL path prefix, not by which separate app/domain was opened. This matters because [decision-49](solution.md#auth-decisions) lets the same email hold both an End User and a Delivery Agent identity — the path prefix, not the login form, decides which role's screens follow a successful OTP verify.
 
-**FRONTEND_STOREFRONT (End User)**
+**FRONTEND_STOREFRONT (End User)** — unprefixed, the site's own root paths
 - `/login` — [ds-auth-001](#) (email entry). Entry point: any unauthenticated visit.
 - `/login/verify` — [ds-auth-002](#) (OTP entry). Reachable only after `/login` submits an email; back-navigation returns to `/login`, not a blank state.
 - `/login/limited` — [ds-auth-003](#) (rate-limited). A state of `/login/verify`, not a distinct route the user can bookmark.
 - Exit: successful verify lands on the catalog home (owned by CATALOG's own IA, out of scope here).
 
-**FRONTEND_AGENT (Delivery Agent)**
-- `/register` — [ds-auth-004](#). Entry point for anyone without an agent record yet.
-- `/register/submitted` — [ds-auth-005](#). Reachable only immediately after a successful `/register` submit.
-- `/status` — [ds-auth-006](#). Where a registered agent lands if their status isn't `approved`; an `approved` agent is instead routed to `/login` → `/login/verify`, the same two routes and screens [ds-auth-001](#)/[ds-auth-002](#) serve for End User — one mechanism, reused, per [decision-49](solution.md#auth-decisions).
+**FRONTEND_AGENT (Delivery Agent)** — `/agent/*` (CR-007), mirroring `FRONTEND_ADMIN`'s `/admin/*` prefix below
+- `/agent/register` — [ds-auth-004](#). Entry point for anyone without an agent record yet.
+- `/agent/register/submitted` — [ds-auth-005](#). Reachable only immediately after a successful `/agent/register` submit.
+- `/agent/status` — [ds-auth-006](#). Where a registered agent lands if their status isn't `approved`; an `approved` agent is instead routed to `/agent/login` → `/agent/login/verify` — the same reused screens [ds-auth-001](#)/[ds-auth-002](#) serve for End User, at the agent's own path prefix, not literally End User's URL — per [decision-49](solution.md#auth-decisions).
 - Exit: `approved` status plus a verified OTP lands on the agent's assigned-orders view (owned by ORDERS' own IA, out of scope here).
 
 **FRONTEND_ADMIN (Admin)**
@@ -301,3 +301,8 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
 Via:         CR-006
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Via:         CR-007
