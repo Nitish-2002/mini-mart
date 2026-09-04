@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,6 +12,7 @@ from app.auth.schemas import (
     OtpVerifyIn,
     OtpVerifyOut,
 )
+from app.auth.session import IssuedSession, set_session_cookie
 from app.core.db import get_session
 
 # Prefix matches interface-01 BACKEND_API's /v1/auth/* route group
@@ -49,7 +50,7 @@ async def otp_request(
     responses={401: {"model": ErrorOut}, 410: {"model": ErrorOut}},
 )
 async def otp_verify(
-    body: OtpVerifyIn, session: AsyncSession = Depends(get_session)
+    body: OtpVerifyIn, response: Response, session: AsyncSession = Depends(get_session)
 ) -> OtpVerifyOut | JSONResponse:
     try:
         result = await services.verify_otp(session, body.email, body.code, body.role)
@@ -61,11 +62,11 @@ async def otp_verify(
         return JSONResponse(
             status_code=410, content=ErrorOut(error="code_expired").model_dump(exclude_none=True)
         )
-    return OtpVerifyOut(
-        session_token=result.session_token,
-        role=result.role,
-        expires_at=result.expires_at.isoformat(),
+    # CR-004: session delivered via Set-Cookie only, never in this body.
+    set_session_cookie(
+        response, IssuedSession(token=result.session_token, expires_at=result.expires_at)
     )
+    return OtpVerifyOut(role=result.role, expires_at=result.expires_at.isoformat())
 
 
 @router.post(

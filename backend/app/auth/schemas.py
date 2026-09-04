@@ -28,7 +28,7 @@ class OtpVerifyIn(BaseModel):
 
 
 class OtpVerifyOut(BaseModel):
-    session_token: str
+    # CR-004: no session_token field — delivered exclusively via Set-Cookie.
     role: Role
     expires_at: str
 

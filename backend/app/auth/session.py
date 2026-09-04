@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
 import jwt
+from fastapi import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.config import auth_settings
@@ -18,6 +19,7 @@ from app.auth.models import AuthSession
 # decision-52 (solution.md) — same lifetime for every role.
 SESSION_LIFETIME = timedelta(days=7)
 JWT_ALGORITHM = "HS256"  # decision-70 (trd.md)
+COOKIE_NAME = "session_token"
 
 
 @dataclass(frozen=True)
@@ -46,3 +48,23 @@ async def issue_session(db_session: AsyncSession, role: str, user_id: uuid.UUID)
     )
 
     return IssuedSession(token=token, expires_at=expires_at)
+
+
+def set_session_cookie(response: Response, issued: IssuedSession) -> None:
+    """CR-004: the *only* place the session token is ever written to an HTTP
+    response — never in a JSON body. `Secure` is always set even for LOCAL
+    HTTP dev traffic (browsers accept this over http://localhost specifically;
+    it's the one exemption to "Secure requires HTTPS").
+    """
+    response.set_cookie(
+        key=COOKIE_NAME,
+        value=issued.token,
+        max_age=int((issued.expires_at - datetime.now(timezone.utc)).total_seconds()),
+        httponly=True,
+        secure=True,
+        samesite="lax",
+    )
+
+
+def clear_session_cookie(response: Response) -> None:
+    response.delete_cookie(key=COOKIE_NAME, httponly=True, secure=True, samesite="lax")
