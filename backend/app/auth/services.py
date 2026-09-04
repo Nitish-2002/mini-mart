@@ -20,6 +20,7 @@ from app.auth.models import (
     AuthDeliveryAgent,
     AuthEndUser,
     AuthOtpCode,
+    AuthResetToken,
 )
 
 # sm-auth-agent-status's closed transition table (trd.md §5b) — the only
@@ -38,6 +39,13 @@ OTP_RESEND_COOLDOWN_SECONDS = 60
 # decision-53 (solution.md)
 OTP_RATE_LIMIT_PER_HOUR = 5
 OTP_RATE_LIMIT_WINDOW = timedelta(hours=1)
+# No expiry duration was ever fixed upstream for reset tokens (only OTP's
+# 10 minutes is a real decision, decision-28) — 1 hour is this task's own
+# implementation-time default: long enough that checking email isn't a race,
+# short enough to bound a stale unused link. Not escalated: low-stakes,
+# easily revised (see trd.md's own reversal-trigger pattern for this kind
+# of implementation default).
+RESET_TOKEN_EXPIRY = timedelta(hours=1)
 
 
 class RateLimitExceeded(Exception):
@@ -71,6 +79,10 @@ class InvalidTransition(Exception):
 
 
 class InvalidCredentials(Exception):
+    pass
+
+
+class ResetTokenInvalid(Exception):
     pass
 
 
@@ -249,6 +261,72 @@ async def admin_login(session: AsyncSession, username: str, password: str) -> Ad
     issued = await session_module.issue_session(session, "admin", admin.id)
     await session.commit()
     return AdminLoginResult(session_token=issued.token, expires_at=issued.expires_at)
+
+
+async def request_password_reset(session: AsyncSession, recovery_email: str) -> None:
+    """TRD-AUTH-010 / decision-77: always succeeds silently, whether or not
+    `recovery_email` matches the singleton admin's registered address — the
+    caller has no way to tell the two cases apart, by design.
+    """
+    admin = (
+        await session.execute(
+            select(AuthAdminAccount).where(AuthAdminAccount.recovery_email == recovery_email)
+        )
+    ).scalar_one_or_none()
+    if admin is None:
+        return
+
+    token = crypto.generate_reset_token()
+    now = datetime.now(timezone.utc)
+    session.add(
+        AuthResetToken(
+            admin_account_id=admin.id,
+            token_hash=crypto.hash_reset_token(token),
+            expires_at=now + RESET_TOKEN_EXPIRY,
+        )
+    )
+    await session.commit()
+    email.send_password_reset_email(recovery_email, _build_reset_link(token))
+
+
+async def confirm_password_reset(
+    session: AsyncSession, token: str, new_password: str
+) -> AdminLoginResult:
+    """TRD-AUTH-008 / inv-auth-single-use-tokens: only the single latest
+    auth_reset_tokens row (any admin — there's only ever one) is checked,
+    same supersession pattern as OTP. Password update + used_at both commit
+    in one transaction. Auto-issues a session on success (SS-AUTH-004's
+    "Admin sets a new password... " outcome includes being logged in after).
+    """
+    stmt = select(AuthResetToken).order_by(AuthResetToken.issued_at.desc()).limit(1)
+    reset_row = (await session.execute(stmt)).scalar_one_or_none()
+
+    now = datetime.now(timezone.utc)
+    if (
+        reset_row is None
+        or reset_row.used_at is not None
+        or reset_row.expires_at < now
+        or not crypto.verify_reset_token(token, reset_row.token_hash)
+    ):
+        raise ResetTokenInvalid()
+
+    admin = (
+        await session.execute(
+            select(AuthAdminAccount).where(AuthAdminAccount.id == reset_row.admin_account_id)
+        )
+    ).scalar_one()
+
+    reset_row.used_at = now
+    admin.password_hash = crypto.hash_password(new_password)
+    issued = await session_module.issue_session(session, "admin", admin.id)
+    await session.commit()
+
+    return AdminLoginResult(session_token=issued.token, expires_at=issued.expires_at)
+
+
+def _build_reset_link(token: str) -> str:
+    # URL format/routing is this task's own decision to make (decision budget).
+    return f"https://admin.minimart.app/reset-password?token={token}"
 
 
 async def update_agent_status(

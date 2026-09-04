@@ -9,6 +9,8 @@ from app.auth.dependencies import Principal, get_current_user, require_role
 from app.auth.schemas import (
     AdminLoginIn,
     AdminLoginOut,
+    AdminPasswordResetConfirmIn,
+    AdminPasswordResetRequestIn,
     AgentRegisterIn,
     AgentRegisterOut,
     AgentStatusUpdateIn,
@@ -146,6 +148,37 @@ async def admin_login(
         response, IssuedSession(token=result.session_token, expires_at=result.expires_at)
     )
     return AdminLoginOut(expires_at=result.expires_at.isoformat())
+
+
+@router.post("/admin/password-reset/request", status_code=202, response_model=None)
+async def admin_password_reset_request(
+    body: AdminPasswordResetRequestIn, session: AsyncSession = Depends(get_session)
+) -> dict:
+    # decision-77: identical 202 {} whether or not the email matched — no
+    # try/except needed, the service itself never raises for a non-match.
+    await services.request_password_reset(session, body.email)
+    return {}
+
+
+@router.post(
+    "/admin/password-reset/confirm",
+    response_model=None,
+    responses={410: {"model": ErrorOut}},
+)
+async def admin_password_reset_confirm(
+    body: AdminPasswordResetConfirmIn, response: Response, session: AsyncSession = Depends(get_session)
+) -> dict | JSONResponse:
+    try:
+        result = await services.confirm_password_reset(session, body.token, body.new_password)
+    except services.ResetTokenInvalid:
+        return JSONResponse(
+            status_code=410,
+            content=ErrorOut(error="token_expired_or_used").model_dump(exclude_none=True),
+        )
+    set_session_cookie(
+        response, IssuedSession(token=result.session_token, expires_at=result.expires_at)
+    )
+    return {}
 
 
 @router.post("/logout", status_code=204)

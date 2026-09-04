@@ -6,7 +6,7 @@ CR-002 `role` field) — never redesigned here.
 
 from typing import Literal
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 Role = Literal["end_user", "delivery_agent"]
 
@@ -64,6 +64,15 @@ class AdminLoginIn(BaseModel):
 class AdminLoginOut(BaseModel):
     # CR-004: no session_token field — delivered exclusively via Set-Cookie.
     expires_at: str
+
+
+class AdminPasswordResetRequestIn(BaseModel):
+    email: EmailStr
+
+
+class AdminPasswordResetConfirmIn(BaseModel):
+    token: str
+    new_password: str = Field(min_length=12)
 
 
 class ErrorOut(BaseModel):
