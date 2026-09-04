@@ -10,8 +10,8 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.auth import crypto, email
-from app.auth.models import AuthOtpCode
+from app.auth import crypto, email, session as session_module
+from app.auth.models import AuthDeliveryAgent, AuthEndUser, AuthOtpCode
 
 # decision-28 (business-requirements.md)
 OTP_EXPIRY = timedelta(minutes=10)
@@ -26,10 +26,30 @@ class RateLimitExceeded(Exception):
         self.retry_after_seconds = retry_after_seconds
 
 
+class InvalidCode(Exception):
+    """Also used when a delivery_agent verify targets an email with no
+    existing AuthDeliveryAgent row — deliberately the same shape as a wrong
+    code, so this endpoint never reveals whether an email is a registered
+    agent (the same enumeration-resistance pattern trd.md's Failure Shape
+    and decision-77 already established elsewhere in this module).
+    """
+
+
+class CodeExpired(Exception):
+    pass
+
+
 @dataclass(frozen=True)
 class OtpRequestResult:
     cooldown_seconds: int
     expires_in_seconds: int
+
+
+@dataclass(frozen=True)
+class OtpVerifyResult:
+    session_token: str
+    role: str
+    expires_at: datetime
 
 
 async def request_otp(session: AsyncSession, otp_email: str, role: str) -> OtpRequestResult:
@@ -82,3 +102,66 @@ async def request_otp(session: AsyncSession, otp_email: str, role: str) -> OtpRe
         cooldown_seconds=OTP_RESEND_COOLDOWN_SECONDS,
         expires_in_seconds=int(OTP_EXPIRY.total_seconds()),
     )
+
+
+async def verify_otp(session: AsyncSession, otp_email: str, code: str, role: str) -> OtpVerifyResult:
+    """TRD-AUTH-009: a wrong code never sets consumed_at — the row stays
+    valid for a further attempt until it expires or is correctly entered.
+    Only the single latest row for (email, role) is ever checked
+    (supersession, per TASK-AUTH-006's own note).
+    """
+    stmt = (
+        select(AuthOtpCode)
+        .where(AuthOtpCode.email == otp_email, AuthOtpCode.role == role)
+        .order_by(AuthOtpCode.issued_at.desc())
+        .limit(1)
+    )
+    otp_row = (await session.execute(stmt)).scalar_one_or_none()
+
+    if otp_row is None or otp_row.consumed_at is not None:
+        raise InvalidCode()
+
+    now = datetime.now(timezone.utc)
+    if otp_row.expires_at < now:
+        raise CodeExpired()
+
+    if not crypto.verify_otp_code(code, otp_row.code_hash):
+        raise InvalidCode()
+
+    if role == "end_user":
+        identity_id = await _get_or_create_end_user_id(session, otp_email)
+    else:
+        identity_id = await _get_delivery_agent_id(session, otp_email)
+        if identity_id is None:
+            # No registration exists for this email under this role — same
+            # response shape as a wrong code, see InvalidCode's own docstring.
+            raise InvalidCode()
+
+    otp_row.consumed_at = now
+    issued = await session_module.issue_session(session, role, identity_id)
+    await session.commit()
+
+    return OtpVerifyResult(
+        session_token=issued.token, role=role, expires_at=issued.expires_at
+    )
+
+
+async def _get_or_create_end_user_id(session: AsyncSession, otp_email: str):
+    existing = (
+        await session.execute(select(AuthEndUser).where(AuthEndUser.email == otp_email))
+    ).scalar_one_or_none()
+    if existing is not None:
+        return existing.id
+    new_user = AuthEndUser(email=otp_email)
+    session.add(new_user)
+    await session.flush()  # populate new_user.id without committing yet
+    return new_user.id
+
+
+async def _get_delivery_agent_id(session: AsyncSession, otp_email: str):
+    agent = (
+        await session.execute(
+            select(AuthDeliveryAgent).where(AuthDeliveryAgent.email == otp_email)
+        )
+    ).scalar_one_or_none()
+    return agent.id if agent is not None else None

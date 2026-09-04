@@ -24,6 +24,16 @@ def verify_otp_code(code: str, code_hash: str) -> bool:
     return hmac.compare_digest(hash_otp_code(code), code_hash)
 
 
+def hash_jti(jti: str) -> str:
+    """Plain SHA-256, not keyed — a session jti is server-generated randomness
+    already protected by the JWT's own signature (decision-70), not a
+    user-supplied secret needing decision-69's pepper protection. Hashing it
+    at all is just DB-leak hygiene, avoiding storing a trivially-correlatable
+    raw jti alongside a role/user_id.
+    """
+    return hashlib.sha256(jti.encode()).hexdigest()
+
+
 def generate_reset_token() -> str:
     """A high-entropy, URL-safe token — no need to be human-enterable."""
     return secrets.token_urlsafe(32)

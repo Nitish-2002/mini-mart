@@ -21,6 +21,18 @@ class OtpRequestOut(BaseModel):
     expires_in_seconds: int
 
 
+class OtpVerifyIn(BaseModel):
+    email: EmailStr
+    code: str
+    role: Role
+
+
+class OtpVerifyOut(BaseModel):
+    session_token: str
+    role: Role
+    expires_at: str
+
+
 class ErrorOut(BaseModel):
     error: str
     retry_after_seconds: int | None = None
