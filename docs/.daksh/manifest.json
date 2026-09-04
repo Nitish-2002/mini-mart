@@ -439,7 +439,7 @@
       ]
     },
     "30d:AUTH": {
-      "status": "approved",
+      "status": "pending_approval",
       "mode": "greenfield",
       "doc_type": "system-spec",
       "output": "docs/implementation/AUTH/system.md",
@@ -470,7 +470,7 @@
       ]
     },
     "40:AUTH": {
-      "status": "approved",
+      "status": "pending_approval",
       "mode": "greenfield",
       "doc_type": "experience-design",
       "output": "docs/implementation/AUTH/experience-design.md",
@@ -572,6 +572,13 @@
       "stage": "50c",
       "module": "AUTH",
       "status": "todo"
+    },
+    "TASK-AUTH-002": {
+      "parent": "CR-002",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "status": "todo"
     }
   },
   "change_records": {
@@ -600,6 +607,21 @@
           "date": "2026-09-03"
         }
       ]
+    },
+    "CR-002": {
+      "module": "AUTH",
+      "path": "docs\\implementation\\AUTH\\change-records\\CR-002.md",
+      "status": "OPEN",
+      "raised_by": "Bhargav",
+      "date": "2026-09-04",
+      "tier": "system",
+      "touched_docs": [
+        "docs/implementation/AUTH/system.md",
+        "docs/implementation/AUTH/experience-design.md"
+      ],
+      "change_task": "TASK-AUTH-002",
+      "change_summary": "OTP request/verify need a role discriminator to resolve End User vs Delivery Agent identity under a shared email",
+      "approvals": []
     }
   },
   "risk_register": [
@@ -608,6 +630,15 @@
       "stage": "30b",
       "reason": "Prior stage 30a approved: 0/1",
       "detected_at": "2026-09-03T17:50:05.913999+00:00",
+      "status": "open",
+      "acknowledged_by": null,
+      "acknowledged_at": null
+    },
+    {
+      "risk_id": "RISK-002",
+      "stage": "50a:AUTH",
+      "reason": "docs\\implementation\\AUTH\\experience-design.md declares no work items matching DT-AUTH-\\d+",
+      "detected_at": "2026-09-04T05:17:11.747973+00:00",
       "status": "open",
       "acknowledged_by": null,
       "acknowledged_at": null
