@@ -397,9 +397,11 @@ requestBody:
   role: { type: string, enum: [end_user, delivery_agent], required: true }  # CR-002
 responses:
   "200":
-    session_token: { type: string, description: "opaque to the client; delivered as an httpOnly cookie, never read by JS" }
     role: { type: string, enum: [end_user, delivery_agent] }
     expires_at: { type: string, format: date-time }
+    # CR-004: no session_token field here — the session is delivered exclusively
+    # via Set-Cookie (httpOnly, Secure, SameSite=Lax), never echoed in the body.
+    # See Security Design's "Session delivery" paragraph for why.
   "401":
     error: { type: string, const: invalid_code }
   "410":
@@ -440,8 +442,8 @@ requestBody:
   password: { type: string, required: true }
 responses:
   "200":
-    session_token: { type: string }
     expires_at: { type: string, format: date-time }
+    # CR-004: session delivered via Set-Cookie only, not this body — see otp/verify's note.
   "401":
     error: { type: string, const: invalid_credentials }
   "429":
@@ -467,8 +469,8 @@ requestBody:
   token: { type: string, required: true }
   new_password: { type: string, minLength: 12, required: true }
 responses:
-  "200":
-    session_token: { type: string }
+  "200": {}
+    # CR-004: session delivered via Set-Cookie only, not this body — see otp/verify's note.
   "410":
     error: { type: string, const: token_expired_or_used }
 ```
@@ -480,7 +482,7 @@ responses:
 responses:
   "204": {}
 ```
-**TRD-AUTH-013:** session-scoped; revokes the caller's own current `jti` only ([sm-auth-session](#)'s `active -> revoked`) — every other session, including other logged-in devices for the same account, is left untouched. Not part of AUTH's own screen inventory — the triggering control lives in whichever screen/shell each frontend app puts its account menu, the same way [ds-auth-011](experience-design.md#4c-design-execution) is "shared shell state, not a standalone screen."
+**TRD-AUTH-013:** session-scoped; revokes the caller's own current `jti` only ([sm-auth-session](#)'s `active -> revoked`) — every other session, including other logged-in devices for the same account, is left untouched. Also clears the session cookie (CR-004) via a `Set-Cookie` with an expired `Max-Age`, matching how it was set. Not part of AUTH's own screen inventory — the triggering control lives in whichever screen/shell each frontend app puts its account menu, the same way [ds-auth-011](experience-design.md#4c-design-execution) is "shared shell state, not a standalone screen."
 
 ## 6a Idempotency and Failure Contracts
 
@@ -516,9 +518,9 @@ sequenceDiagram
         A-->>U: 401 invalid_code / 410 code_expired
     else match
         A->>DB: UPDATE consumed_at = now()
-        A->>DB: find-or-create AuthEndUser/AuthDeliveryAgent by email+role
+        A->>DB: find-or-create AuthEndUser (end_user) / find-only AuthDeliveryAgent (delivery_agent, 401 invalid_code if none)
         A->>DB: INSERT auth_sessions row; issue JWT (jti, role, exp)
-        A-->>U: 200 {session_token, role, expires_at}
+        A-->>U: Set-Cookie session_token (httpOnly); 200 {role, expires_at}
     end
 ```
 
@@ -582,7 +584,7 @@ sequenceDiagram
         A->>DB: UPDATE auth_reset_tokens.used_at
         A->>DB: UPDATE auth_admin_accounts.password_hash (Argon2id, decision-68)
         A->>DB: COMMIT
-        A-->>AD: 200 {session_token}
+        A-->>AD: Set-Cookie session_token (httpOnly); 200 {}
     end
 ```
 
@@ -602,6 +604,8 @@ No new database, cache, or message-queue dependency — `auth_sessions`/`auth_ot
 ## Security Design
 
 **Authentication:** OTP (End User, Delivery Agent) via [interface-auth-identity](#), password (Admin) via [interface-auth-admin-login](#) — both flows terminate in the same JWT issuance mechanism ([decision-70](#)).
+
+**Session delivery (CR-004):** the issued JWT is delivered exclusively via `Set-Cookie` (`HttpOnly`, `Secure`, `SameSite=Lax`) — never in a JSON response body, on any endpoint, ever. Echoing the same token in the body a browser client can read via `fetch()` would defeat `HttpOnly`'s entire purpose (blocking JS/XSS access to the cookie) the moment that same value is sitting in JS-readable response text anyway. `otp/verify`, `admin/login`, and `admin/password-reset/confirm` return only the non-secret fields (`role`, `expires_at`) in their bodies; `logout` clears the cookie the same way it was set.
 
 **Authorization:** every protected route in every module declares its required role via `Depends(require_role(...))` ([decision-76](#)), which internally calls `get_current_user()` — the sequence is: verify JWT signature + `exp` (cryptographic, no DB), then one indexed lookup against `auth_sessions` for revocation ([decision-71](#)). **TRD-AUTH-004:** a token whose signature and `exp` are both valid is still rejected if its `jti` is missing from `auth_sessions` or has a non-null `revoked_at`. A missing/invalid/expired/revoked session is rejected identically (`401`, [system.md's Failure Shape](system.md#logical-interfaces-and-data-flow)); a valid session with the wrong role is rejected distinctly (`403`).
 
@@ -671,3 +675,8 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
 Via:         CR-003
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Via:         CR-004

@@ -1499,7 +1499,7 @@
     "CR-004": {
       "module": "AUTH",
       "path": "docs\\implementation\\AUTH\\change-records\\CR-004.md",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "raised_by": "Bhargav",
       "date": "2026-09-04",
       "tier": "design",
@@ -1509,7 +1509,13 @@
       ],
       "change_task": "TASK-AUTH-023",
       "change_summary": "Session delivery must be httpOnly-cookie-only, not also echoed in the JSON response body, to actually get decision-35's XSS protection",
-      "approvals": []
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-04"
+        }
+      ]
     }
   },
   "risk_register": [
