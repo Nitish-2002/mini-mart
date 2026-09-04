@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 
 import jwt
 from fastapi import Response
+from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.config import auth_settings
@@ -68,3 +69,15 @@ def set_session_cookie(response: Response, issued: IssuedSession) -> None:
 
 def clear_session_cookie(response: Response) -> None:
     response.delete_cookie(key=COOKIE_NAME, httponly=True, secure=True, samesite="lax")
+
+
+async def revoke_session(db_session: AsyncSession, jti: str) -> None:
+    """TRD-AUTH-013: revokes only the one session this jti names — never any
+    other session for the same account.
+    """
+    await db_session.execute(
+        update(AuthSession)
+        .where(AuthSession.jti_hash == hash_jti(jti))
+        .values(revoked_at=datetime.now(timezone.utc))
+    )
+    await db_session.commit()

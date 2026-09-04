@@ -12,7 +12,8 @@ from app.auth.schemas import (
     OtpVerifyIn,
     OtpVerifyOut,
 )
-from app.auth.session import IssuedSession, set_session_cookie
+from app.auth.dependencies import Principal, get_current_user
+from app.auth.session import IssuedSession, clear_session_cookie, revoke_session, set_session_cookie
 from app.core.db import get_session
 
 # Prefix matches interface-01 BACKEND_API's /v1/auth/* route group
@@ -86,3 +87,13 @@ async def agent_register(
             content=ErrorOut(error="email_already_registered").model_dump(exclude_none=True),
         )
     return AgentRegisterOut(status="pending_approval")
+
+
+@router.post("/logout", status_code=204)
+async def logout(
+    response: Response,
+    principal: Principal = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    await revoke_session(session, principal.jti)
+    clear_session_cookie(response)
