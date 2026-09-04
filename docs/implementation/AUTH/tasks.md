@@ -616,3 +616,14 @@ Hash:        00ad183eef60…
 - [ ] All changes listed in CR-005 ## Change Summary are applied
 - [ ] CR-005 approved via `/daksh approve CR-005`
 - [ ] Patched docs pass `/daksh preflight`
+
+
+#### TASK-AUTH-025: [CR-006] Token contract table doesn't match the published prototype's actual palette/typography (color values, dark theme, Fredoka)
+- **Depends on:** none
+- **Decision budget:** 30 min
+- **Status:** todo
+
+**Acceptance criteria:**
+- [ ] All changes listed in CR-006 ## Change Summary are applied
+- [ ] CR-006 approved via `/daksh approve CR-006`
+- [ ] Patched docs pass `/daksh preflight`
