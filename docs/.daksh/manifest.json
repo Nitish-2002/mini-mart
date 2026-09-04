@@ -527,7 +527,7 @@
       ]
     },
     "50a:AUTH": {
-      "status": "approved",
+      "status": "pending_approval",
       "mode": "greenfield",
       "doc_type": "trd",
       "output": "docs/implementation/AUTH/trd.md",
@@ -617,6 +617,13 @@
       "stage": "50c",
       "module": "AUTH",
       "status": "todo"
+    },
+    "TASK-AUTH-003": {
+      "parent": "CR-003",
+      "children": [],
+      "stage": "50c",
+      "module": "AUTH",
+      "status": "todo"
     }
   },
   "change_records": {
@@ -666,6 +673,20 @@
           "date": "2026-09-04"
         }
       ]
+    },
+    "CR-003": {
+      "module": "AUTH",
+      "path": "docs\\implementation\\AUTH\\change-records\\CR-003.md",
+      "status": "OPEN",
+      "raised_by": "Bhargav",
+      "date": "2026-09-04",
+      "tier": "trd",
+      "touched_docs": [
+        "docs/implementation/AUTH/trd.md"
+      ],
+      "change_task": "TASK-AUTH-003",
+      "change_summary": "TRD never tagged its testable technical requirements with TRD-AUTH-NNN IDs, blocking 50b's traceability table",
+      "approvals": []
     }
   },
   "risk_register": [
