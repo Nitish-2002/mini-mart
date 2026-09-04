@@ -116,19 +116,27 @@ metric-a11y-contrast -> constraint-a11y | relation: watches
 
 **Primitive source of truth.** Mini Mart has no existing brand identity, design system, or component library ([client-context.md](../../client-context.md), [decision-61](#)–[decision-63](#)) — everything below is created here, not inherited. What's explicitly *not* decided yet: final logo/wordmark (out of scope for AUTH). Microcopy is decided — [decision-66](#) locks the drafted copy as final.
 
-**Token contract.**
+**Token contract** (CR-006: corrected to match the published prototype exactly — [decision-62](#)'s choice of a saturated green stands, only the precise hex values below were wrong in the first draft). Each color names its light-theme value, then its dark-theme value.
 
-| Token | Value | Notes |
+| Token | Light / Dark | Notes |
 |---|---|---|
-| Primary | `#059669` (emerald-600) | Buttons, links, focus rings, brand accents ([decision-62](#)) |
-| Primary-hover | `#047857` | |
-| Neutral-900 (text) | `#0F172A` | Body text on light backgrounds |
-| Neutral-500 (secondary text) | `#64748B` | Helper text, placeholders |
-| Neutral-200 (borders) | `#E2E8F0` | Input borders, dividers |
-| Neutral-50 (surface) | `#F8FAFC` | Page background |
-| Error | `#DC2626` | Error text, borders, icons |
-| Success | `#059669` (same as primary) | Reuses primary — grocery-green already reads as "good" |
-| Font family | Inter (Google Fonts) | [decision-61](#) — free, clean at all sizes |
+| Primary (jade) | `#12734f` / `#2fa578` | Buttons, links, focus rings, brand accents ([decision-62](#)) |
+| Primary-deep (hover/active) | `#0a4f36` / `#3fc290` | |
+| Primary-tint | `#e3f1ea` / `#1b2b23` | Approved-state fills, subtle highlight backgrounds |
+| Background (paper) | `#faf8f4` / `#161510` | Page background — warm off-white, not stark white |
+| Surface-raised | `#ffffff` / `#201f19` | Cards, the device/browser frame surface |
+| Text (ink) | `#1c1b18` / `#f2efe9` | Body text |
+| Text-secondary (ink-soft) | `#4a473f` / `#c9c4b8` | Helper text, placeholders |
+| Border/neutral (sand) | `#8c8672` / `#948e7c` | Secondary icons, muted labels |
+| Border-line | `#e4e0d5` / `#3a382f` | Input borders, dividers |
+| Neutral-fill (sand-fill) | `#f0ede4` / `#211f19` | Chip/tab backgrounds |
+| Warning/pending accent (gold) | `#c98a2e` / `#e0a748` | `pending_approval` StatusBadge state, submitted-confirmation icon |
+| Gold-tint | `#faf0dd` / `#2b2416` | Gold accent's fill background |
+| Error (brick) | `#ae4034` / `#d9695b` | Error text, borders, icons, `rejected`/`deactivated` StatusBadge states |
+| Error-tint (brick-tint) | `#f7e9e7` / `#2e1c19` | Error accent's fill background |
+| Shadow | `0 1px 2px rgba(28,27,24,.06), 0 8px 24px -8px rgba(28,27,24,.18)` / `0 1px 2px rgba(0,0,0,.3), 0 12px 28px -10px rgba(0,0,0,.5)` | Card elevation |
+| Display typeface | Fredoka (Google Fonts) | Wordmark and large display moments only — not a second UI face; everything else stays Inter ([decision-61](#)) |
+| Body/UI typeface | Inter (Google Fonts) | [decision-61](#) — free, clean at all sizes |
 | Type scale | 12/14/16/20/24/32px | Caption / body / body-lg / h3 / h2 / h1 |
 | Spacing scale | 4/8/12/16/24/32/48/64px | 4px base unit throughout |
 | Radius | 8px (inputs/buttons), 12px (cards) | Friendly, not childish |
@@ -288,3 +296,8 @@ Approved by: Bhargav
 Role:        PTL
 Date:        2026-09-04
 Via:         CR-004
+
+Approved by: Bhargav
+Role:        PTL
+Date:        2026-09-04
+Via:         CR-006
