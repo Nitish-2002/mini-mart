@@ -308,15 +308,31 @@
       ]
     },
     "40:CATALOG": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "experience-design",
       "output": "docs/implementation/CATALOG/experience-design.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\CATALOG\\experience-design.md": "5c082e255f4490939d809e67f393038eacc78dbbf74008736a86e706330d2897"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-05",
+          "doc_hash": {
+            "docs\\implementation\\CATALOG\\experience-design.md": "5c082e255f4490939d809e67f393038eacc78dbbf74008736a86e706330d2897"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-05",
+          "note": "First-author: CATALOG Experience Design Spec drafted (4A/4B/4C). Inherits AUTH's design system wholesale (decision-90), adding 5 new catalog-specific primitives (photo display, quantity stepper, category chip, data table, file upload). 8 screens (DS-CATALOG-001..008), 4 design tasks, 2 secondary components, 3 journeys. Published a real interactive HTML prototype covering all three journeys, including live stock-state cycling and oversell rejection. 5 decisions (90-94) resolved in the same drafting round, including the one open question (default browse view = all items). No open questions remain. Short hash: oi2ITEupBZ."
+        }
+      ]
     },
     "50a:CATALOG": {
       "status": "not_started",
