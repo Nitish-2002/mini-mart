@@ -28,6 +28,9 @@ An in-person purchase made at Mini Mart's physical store, recorded by Admin, tha
 ### Service area
 The fixed delivery radius around the store within which checkout is permitted; an address outside it is rejected at checkout ([UC-003](business-requirements.md#uc-003-end-user-places-an-order)). First established in [`client-context.md`](client-context.md#phase-1-decisions) (decision-01).
 
+### Stock reservation status
+An internal bookkeeping state on CATALOG's own reservation ledger (never customer- or admin-visible) — `active` (stock has been deducted and not yet given back) or `released` (a prior reservation was reversed, stock returned to the pool). Distinct from stock status above: this tracks one `reserve_stock()` call's own lifecycle, not an item's displayed availability. See [CATALOG TRD §5b](implementation/CATALOG/trd.md#5b-state-machines).
+
 ---
 
 ## Delivery Agent
