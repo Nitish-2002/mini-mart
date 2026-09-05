@@ -13,6 +13,12 @@
   --jade-tint: #e3f1ea;
   --gold: #c98a2e;
   --gold-tint: #faf0dd;
+  /* --gold/--sand stay as-is for borders/dots (3:1 non-text threshold) —
+     these darker variants are for TEXT on their matching -tint background
+     specifically, where axe-core measured the plain --gold/--sand pairing
+     at 2.59:1/3.11:1 against WCAG AA's 4.5:1 (TEST-AUTH-035/metric-a11y-contrast). */
+  --gold-text: #835a1e;
+  --sand-text: #696456;
   --brick: #ae4034;
   --brick-tint: #f7e9e7;
   --focus: #12734f;
@@ -55,6 +61,11 @@
     --jade-tint: #1b2b23;
     --gold: #e0a748;
     --gold-tint: #2b2416;
+    /* Dark mode's plain --gold/--sand already clear 4.5:1 against their own
+       -tint (7.16:1 / 5.04:1 measured) — no separate darkened text variant
+       needed here, just reuse the existing token. */
+    --gold-text: var(--gold);
+    --sand-text: var(--sand);
     --brick: #d9695b;
     --brick-tint: #2e1c19;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 28px -10px rgba(0, 0, 0, 0.5);

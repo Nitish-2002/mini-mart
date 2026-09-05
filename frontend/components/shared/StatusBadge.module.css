@@ -16,7 +16,7 @@
 
 .pending {
   background: var(--gold-tint);
-  color: var(--gold);
+  color: var(--gold-text);
 }
 .pending .dot {
   background: var(--gold);
@@ -32,7 +32,7 @@
 
 .deactivated {
   background: var(--sand-fill);
-  color: var(--sand);
+  color: var(--sand-text);
 }
 .deactivated .dot {
   background: var(--sand);

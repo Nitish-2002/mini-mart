@@ -14,9 +14,17 @@ interface SessionExpiredBannerProps {
 
 export function SessionExpiredBanner({ loginHref }: SessionExpiredBannerProps) {
   return (
-    <div className={styles.overlay} role="alertdialog" aria-modal="true" aria-live="assertive">
+    <div
+      className={styles.overlay}
+      role="alertdialog"
+      aria-modal="true"
+      aria-live="assertive"
+      aria-labelledby="session-expired-title"
+    >
       <div className={styles.dialog}>
-        <h2 className={styles.title}>Your session has expired</h2>
+        <h2 id="session-expired-title" className={styles.title}>
+          Your session has expired
+        </h2>
         <p className={styles.message}>
           Sign in again to keep going — you&apos;ll come right back to this page.
         </p>

@@ -5,7 +5,10 @@ import styles from "./ErrorStatePanel.module.css";
 // used identically across ds-auth-003 (rate-limited), ds-auth-010
 // (expired/used reset link), ds-auth-012 (generic network/server error).
 // Announced via role="alert" so screen readers pick it up without relying
-// on color (constraint-a11y).
+// on color (constraint-a11y). Every current call site renders this as the
+// page's *entire* content (the form/normal content it replaces takes its
+// own h1 down with it) — title is an h1, not a decorative h2, so the page
+// still has exactly one (axe's page-has-heading-one).
 interface ErrorStatePanelProps {
   title: string;
   message: string;
@@ -27,7 +30,7 @@ export function ErrorStatePanel({ title, message, retryLabel, onRetry }: ErrorSt
           />
         </svg>
       </div>
-      <h2 className={styles.title}>{title}</h2>
+      <h1 className={styles.title}>{title}</h1>
       <p className={styles.message}>{message}</p>
       {onRetry && (
         <Button variant="secondary" onClick={onRetry}>

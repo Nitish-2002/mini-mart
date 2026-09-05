@@ -28,7 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${fredoka.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${fredoka.variable}`}>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
