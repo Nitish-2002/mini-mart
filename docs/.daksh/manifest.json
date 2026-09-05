@@ -281,15 +281,31 @@
       ]
     },
     "30d:CATALOG": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "system-spec",
       "output": "docs/implementation/CATALOG/system.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\CATALOG\\system.md": "ae53a7feeb37c925143fbaf14b0046b8288ffe5ac4fd34d4a4ee9ba43ba14b46"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-05",
+          "doc_hash": {
+            "docs\\implementation\\CATALOG\\system.md": "ae53a7feeb37c925143fbaf14b0046b8288ffe5ac4fd34d4a4ee9ba43ba14b46"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-05",
+          "note": "First-author: CATALOG System drafted from Solution/BRD/Architecture. 14 testable behaviors (SY-CATALOG-001..014), 1 state machine (stock-reservation ledger), 3 data models, 2 interfaces, 4 decisions (86-89) resolved in the same drafting round: CATALOG keeps its own opaque-keyed reservation ledger (resolving a real release_stock(order_id) vs no-order-data tension found grounding against system-architecture.md), low-stock threshold fixed at 5 units, bulk-import photos are URL-only with upload on single-item edit, no stock-change audit trail. No open questions remain. Short hash: lO4ybpLYx6."
+        }
+      ]
     },
     "40:CATALOG": {
       "status": "not_started",
