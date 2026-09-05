@@ -362,15 +362,31 @@
       ]
     },
     "50b:CATALOG": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "test-specification",
       "output": "docs/implementation/CATALOG/test-specification.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\CATALOG\\test-specification.md": "ff402352d084b02101ae0496036b7268591aa06c86470afd4cedac65e54488a1"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-05",
+          "doc_hash": {
+            "docs\\implementation\\CATALOG\\test-specification.md": "ff402352d084b02101ae0496036b7268591aa06c86470afd4cedac65e54488a1"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-05",
+          "note": "First-author: CATALOG Test Specification drafted \u2014 27 TEST-CATALOG-NNN cases across unit/integration/contract/e2e/frontend-a11y/edge-recovery-performance layers, full traceability for all 4 SS-CATALOG, 14 SY-CATALOG, 10 TRD-CATALOG, and 8 DS-CATALOG requirements, all registered in manifest.traceability. No open questions beyond the same PREVIEW-timing caveat AUTH's own e2e tests carry. Short hash: EEbroOLEl6."
+        }
+      ]
     },
     "50c:CATALOG": {
       "status": "not_started",
@@ -1556,6 +1572,280 @@
       "stage": "50c",
       "module": "AUTH",
       "status": "todo"
+    },
+    "TEST-CATALOG-001": {
+      "parent": "SY-CATALOG-003",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-002": {
+      "parent": "SY-CATALOG-004",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-003": {
+      "parent": [
+        "SY-CATALOG-007",
+        "TRD-CATALOG-008"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-004": {
+      "parent": [
+        "SY-CATALOG-005",
+        "SY-CATALOG-006",
+        "TRD-CATALOG-002",
+        "TRD-CATALOG-010"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-005": {
+      "parent": [
+        "SY-CATALOG-005",
+        "TRD-CATALOG-002",
+        "TRD-CATALOG-010"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-006": {
+      "parent": [
+        "SY-CATALOG-006",
+        "TRD-CATALOG-004"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-007": {
+      "parent": "SY-CATALOG-009",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-008": {
+      "parent": [
+        "SY-CATALOG-010",
+        "TRD-CATALOG-001",
+        "TRD-CATALOG-006"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-009": {
+      "parent": [
+        "SY-CATALOG-003",
+        "SY-CATALOG-011",
+        "TRD-CATALOG-003"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-010": {
+      "parent": [
+        "SY-CATALOG-012",
+        "TRD-CATALOG-005"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-011": {
+      "parent": [
+        "SY-CATALOG-012",
+        "TRD-CATALOG-001"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-012": {
+      "parent": "SY-CATALOG-013",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-013": {
+      "parent": [
+        "SY-CATALOG-014",
+        "SY-CATALOG-007"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-014": {
+      "parent": [
+        "SS-CATALOG-001",
+        "SY-CATALOG-001",
+        "SY-CATALOG-002",
+        "TRD-CATALOG-009"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-015": {
+      "parent": [
+        "SS-CATALOG-002",
+        "SY-CATALOG-004",
+        "TRD-CATALOG-007"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-016": {
+      "parent": "SY-CATALOG-008",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-017": {
+      "parent": [
+        "SY-CATALOG-010",
+        "TRD-CATALOG-006"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-018": {
+      "parent": "SY-CATALOG-011",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-019": {
+      "parent": "SS-CATALOG-001",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-020": {
+      "parent": "SS-CATALOG-002",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-021": {
+      "parent": "SS-CATALOG-003",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-022": {
+      "parent": [
+        "DS-CATALOG-001",
+        "DS-CATALOG-002",
+        "DS-CATALOG-003"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-023": {
+      "parent": [
+        "DS-CATALOG-004",
+        "DS-CATALOG-005",
+        "DS-CATALOG-006"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-024": {
+      "parent": [
+        "DS-CATALOG-007",
+        "DS-CATALOG-008"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-025": {
+      "parent": [
+        "SY-CATALOG-012",
+        "TRD-CATALOG-005"
+      ],
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-026": {
+      "parent": "risk-catalog-s3-outage",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
+    },
+    "TEST-CATALOG-027": {
+      "parent": "metric-catalog-search-speed",
+      "children": [],
+      "stage": "50b",
+      "module": "CATALOG",
+      "tier": "tracked",
+      "status": "designed"
     }
   },
   "change_records": {
