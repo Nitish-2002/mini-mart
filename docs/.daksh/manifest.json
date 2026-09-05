@@ -335,15 +335,31 @@
       ]
     },
     "50a:CATALOG": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "trd",
       "output": "docs/implementation/CATALOG/trd.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\CATALOG\\trd.md": "ca1806583a8ff9510a44abce5b5c3803914f4bfc7eb529473acf3305e8ecbf84"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-05",
+          "doc_hash": {
+            "docs\\implementation\\CATALOG\\trd.md": "ca1806583a8ff9510a44abce5b5c3803914f4bfc7eb529473acf3305e8ecbf84"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-05",
+          "note": "First-author: CATALOG TRD drafted \u2014 Postgres schema for 3 tables (catalog_categories/items/reservations), atomic conditional-UPDATE concurrency for reserve_stock() (decision-95), backend-mediated S3 photo upload finally wiring up infra-03 (decision-96), race-safe category auto-creation (decision-97), synchronous bulk import (decision-98). Formal API contracts for 5 /v1/catalog/* endpoints plus the in-process reserve_stock/release_stock/get_availability contract, 10 TRD-CATALOG-NNN tags, idempotency/failure contracts, 4 sequence diagrams. No open questions \u2014 all 4 decisions resolved directly as reversible implementation-mechanism choices. Short hash: MLgBgVqKFg."
+        }
+      ]
     },
     "50b:CATALOG": {
       "status": "not_started",
@@ -1707,6 +1723,15 @@
       "stage": "50a:AUTH",
       "reason": "docs\\implementation\\AUTH\\experience-design.md declares no work items matching DT-AUTH-\\d+",
       "detected_at": "2026-09-04T05:17:11.747973+00:00",
+      "status": "open",
+      "acknowledged_by": null,
+      "acknowledged_at": null
+    },
+    {
+      "risk_id": "RISK-003",
+      "stage": "50a:CATALOG",
+      "reason": "docs\\implementation\\CATALOG\\experience-design.md declares no work items matching DT-CATALOG-\\d+",
+      "detected_at": "2026-09-05T12:08:03.998133+00:00",
       "status": "open",
       "acknowledged_by": null,
       "acknowledged_at": null
