@@ -5,6 +5,7 @@ import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { OtpInput } from "@/components/ui/OtpInput";
 import { apiFetch, ApiError } from "@/lib/api";
+import { markSessionActive } from "@/lib/session-marker";
 
 // ds-auth-002 (experience-design.md §4C) — OTP entry, reused identically for
 // both roles (CR-007's path-prefixed reuse). For delivery_agent, a wrong
@@ -38,6 +39,7 @@ function VerifyForm({ role, homePath }: OtpVerifyScreenProps) {
         method: "POST",
         body: JSON.stringify({ email, code, role }),
       });
+      markSessionActive();
       router.push(homePath);
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
@@ -70,6 +72,11 @@ function VerifyForm({ role, homePath }: OtpVerifyScreenProps) {
         We sent a 6-digit code to <strong>{email}</strong>.
       </p>
       <OtpInput value={code} onChange={setCode} error={Boolean(error)} disabled={loading} />
+      {error && (
+        <p role="alert" aria-live="polite">
+          {error}
+        </p>
+      )}
       <Button onClick={handleVerify} loading={loading} disabled={code.length < 6}>
         Verify &amp; continue
       </Button>

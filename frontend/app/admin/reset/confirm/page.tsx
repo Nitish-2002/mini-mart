@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { apiFetch, ApiError } from "@/lib/api";
+import { markSessionActive } from "@/lib/session-marker";
 
 // ds-auth-009 (experience-design.md §4C) — new-password entry, reached via
 // the emailed link's ?token= query param. ds-auth-010's expired/used-link
@@ -37,6 +38,7 @@ function ConfirmContent() {
         method: "POST",
         body: JSON.stringify({ token, new_password: password }),
       });
+      markSessionActive();
       router.push("/admin");
     } catch (err) {
       if (err instanceof ApiError && err.status === 410) {

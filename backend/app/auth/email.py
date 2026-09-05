@@ -8,7 +8,9 @@ is logged, never raised — the OTP/reset-token row already exists regardless,
 and the user's own resend action is the retry mechanism, not this client.
 """
 
+import json
 import logging
+import os
 
 import resend
 
@@ -20,11 +22,27 @@ resend.api_key = auth_settings.resend_api_key
 
 _FROM_ADDRESS = "Mini Mart <noreply@minimart.app>"
 
+# TASK-AUTH-018/019's own need, not a production code path: Playwright's E2E
+# suite runs the backend as a separate real process it can't monkeypatch
+# (unlike pytest's fake_email fixture in the same process) but still needs
+# to read a real OTP code/reset link. When set, every send is appended as a
+# JSON line to this file instead of calling Resend; unset (every real
+# environment) leaves this branch dead code.
+_OUTBOX_FILE = os.environ.get("EMAIL_OUTBOX_FILE")
+
+
+def _deliver(payload: dict) -> None:
+    if _OUTBOX_FILE:
+        with open(_OUTBOX_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(payload) + "\n")
+        return
+    resend.Emails.send(payload)
+
 
 def send_otp_email(to_email: str, code: str) -> None:
     """TRD-AUTH-012 / inv-auth-no-secrets-in-logs: never log the code itself."""
     try:
-        resend.Emails.send(
+        _deliver(
             {
                 "from": _FROM_ADDRESS,
                 "to": [to_email],
@@ -38,7 +56,7 @@ def send_otp_email(to_email: str, code: str) -> None:
 
 def send_password_reset_email(to_email: str, reset_link: str) -> None:
     try:
-        resend.Emails.send(
+        _deliver(
             {
                 "from": _FROM_ADDRESS,
                 "to": [to_email],

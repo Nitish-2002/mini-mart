@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ErrorStatePanel } from "@/components/shared/ErrorStatePanel";
 import { apiFetch, ApiError } from "@/lib/api";
+import { markSessionActive } from "@/lib/session-marker";
 
 // ds-auth-007 (experience-design.md §4C) — username/password entry,
 // deliberately plain, no OTP step (decision-51). Entry point for
@@ -28,6 +29,7 @@ export default function AdminLoginPage() {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
+      markSessionActive();
       router.push("/admin"); // CATALOG/ORDERS' own admin dashboard, out of scope here
     } catch (err) {
       if (err instanceof ApiError && err.status === 429) {

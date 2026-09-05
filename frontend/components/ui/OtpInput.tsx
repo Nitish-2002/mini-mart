@@ -6,7 +6,9 @@ import styles from "./OtpInput.module.css";
 // component-otp-input (experience-design.md §4A) — 6-box segmented code
 // input. Auto-advances focus per digit, backspace moves focus back, pasting
 // a full code fills all 6 boxes at once (decision-64). Error state flashes
-// all 6 boxes then clears for retry, announced via aria-live, not color alone.
+// all 6 boxes, not color alone — the actual message (wrong vs expired vs
+// generic) is the caller's own copy, announced by OtpVerifyScreen itself,
+// not duplicated here.
 const LENGTH = 6;
 
 interface OtpInputProps {
@@ -73,9 +75,6 @@ export function OtpInput({ value, onChange, error, disabled }: OtpInputProps) {
           />
         ))}
       </div>
-      <span aria-live="assertive" className="sr-only">
-        {error ? "Incorrect code, please try again." : ""}
-      </span>
     </div>
   );
 }

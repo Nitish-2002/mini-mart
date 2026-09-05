@@ -1,14 +1,30 @@
+import os
+
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 
 from app.auth.routers import router as auth_router
 from app.auth.schemas import ErrorOut
+from app.core.config import settings
 from app.core.rate_limit import limiter
 
 app = FastAPI(title="Mini Mart API", version="v1")
 
 app.state.limiter = limiter
+
+# FRONTEND is a separate origin from this backend (CR-007) — the session
+# cookie (CR-004, httpOnly) needs allow_credentials plus an explicit
+# origin allowlist; "*" is rejected by browsers whenever credentials are
+# involved, so there's no wildcard fallback here.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_allowed_origins_list,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.exception_handler(HTTPException)
@@ -38,6 +54,14 @@ async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded) 
 
 
 app.include_router(auth_router)
+
+if os.environ.get("E2E_TEST_MODE"):
+    # Only ever registered under Playwright's own webServer invocation
+    # (frontend/playwright.config.ts sets this) — never in LOCAL/PREVIEW/
+    # PRODUCTION, where the env var is simply unset.
+    from app.e2e_testutils import router as e2e_test_router
+
+    app.include_router(e2e_test_router)
 
 
 @app.get("/health")

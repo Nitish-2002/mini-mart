@@ -12,6 +12,7 @@ or credential belongs in git history. Unset vars fall back to obviously-fake
 local-dev placeholders, matching the pattern in app/auth/config.py.
 """
 import os
+import uuid
 from typing import Sequence, Union
 
 from alembic import op
@@ -143,7 +144,12 @@ def upgrade() -> None:
             "INSERT INTO auth_admin_accounts (id, username, password_hash, recovery_email) "
             "VALUES (:id, :username, :password_hash, :recovery_email)"
         ).bindparams(
-            id=ADMIN_SINGLETON_ID,
+            # A plain str bind param compiles to ::VARCHAR against asyncpg,
+            # which Postgres refuses to implicitly cast into a uuid column
+            # (found by actually running this migration for the first time,
+            # while wiring up TASK-AUTH-018's e2e infra) — a real uuid.UUID
+            # value lets SQLAlchemy infer the correct bind type instead.
+            id=uuid.UUID(ADMIN_SINGLETON_ID),
             username=ADMIN_SEED_USERNAME,
             password_hash=password_hash,
             recovery_email=ADMIN_SEED_EMAIL,
