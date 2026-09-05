@@ -21,7 +21,7 @@
       "name": "Bhargav (Client)",
       "role": "Client",
       "email": "bhargavballa074@gmail.com",
-      "note": "Same person as the PTL roster entry above, representing Mini Mart's own client/business-owner sign-off â€” this project has no separate client stakeholder. Used only to give brd/roadmap-tier change records a genuine second-hat confirmation, not a rubber stamp by a different person."
+      "note": "Same person as the PTL roster entry above, representing Mini Mart's own client/business-owner sign-off \u00e2\u20ac\u201d this project has no separate client stakeholder. Used only to give brd/roadmap-tier change records a genuine second-hat confirmation, not a rubber stamp by a different person."
     }
   ],
   "modules": [
@@ -254,15 +254,31 @@
       ]
     },
     "30c:CATALOG": {
-      "status": "not_started",
+      "status": "approved",
       "mode": "greenfield",
       "doc_type": "solution-spec",
       "output": "docs/implementation/CATALOG/solution.md",
       "inherited_ref": null,
       "locked_by": null,
-      "doc_hash": null,
-      "approvals": [],
-      "revision_history": []
+      "doc_hash": {
+        "docs\\implementation\\CATALOG\\solution.md": "6926203c0a3b9fe311085f1d75a1b7a30d7d019d1017abef516fee5d35107cbb"
+      },
+      "approvals": [
+        {
+          "by": "Bhargav",
+          "role": "PTL",
+          "date": "2026-09-05",
+          "doc_hash": {
+            "docs\\implementation\\CATALOG\\solution.md": "6926203c0a3b9fe311085f1d75a1b7a30d7d019d1017abef516fee5d35107cbb"
+          }
+        }
+      ],
+      "revision_history": [
+        {
+          "date": "2026-09-05",
+          "note": "First-author: CATALOG Solution drafted from BRD/vision/architecture. 4 business flows (SS-CATALOG-001..004), 4 decisions (82-85) resolved in the same drafting round: import-identity by exact-name-within-category, categories auto-created from import content, item photos in scope (reusing AUTH's OBJECT_STORAGE, resolving a real stage-00/BRD drift in stage-00's favor), items never deleted only zeroed. No open questions remain. Short hash: ZgOKb64vW9."
+        }
+      ]
     },
     "30d:CATALOG": {
       "status": "not_started",
@@ -603,7 +619,7 @@
       "revision_history": [
         {
           "date": "2026-09-04",
-          "note": "First-author: AUTH TRD drafted â€” Postgres schema for all 7 data shapes, Argon2id/HMAC-SHA256/PyJWT+HS256 crypto choices, Postgres-backed session revocation reconciling stateless-JWT with sm-auth-session's revoked state, formal API contracts for 8 /v1/auth/* endpoints, idempotency/failure contracts, 5 sequence diagrams. 3 open questions (security-event logging threshold, rejected-agent reconsideration path, password composition rule). Short hash: JJP0RMwjlf."
+          "note": "First-author: AUTH TRD drafted \u00e2\u20ac\u201d Postgres schema for all 7 data shapes, Argon2id/HMAC-SHA256/PyJWT+HS256 crypto choices, Postgres-backed session revocation reconciling stateless-JWT with sm-auth-session's revoked state, formal API contracts for 8 /v1/auth/* endpoints, idempotency/failure contracts, 5 sequence diagrams. 3 open questions (security-event logging threshold, rejected-agent reconsideration path, password composition rule). Short hash: JJP0RMwjlf."
         },
         {
           "date": "2026-09-04",
@@ -634,7 +650,7 @@
       "revision_history": [
         {
           "date": "2026-09-04",
-          "note": "First-author: AUTH Test Specification drafted — 42 TEST-AUTH-NNN cases across unit/integration/contract/e2e/frontend-a11y/edge-security-performance layers, full traceability for all 5 SS-AUTH, 14 SY-AUTH, 15 TRD-AUTH, and 12 DS-AUTH requirements, all registered in manifest.traceability. Short hash: RpGiQeTfC2."
+          "note": "First-author: AUTH Test Specification drafted \u2014 42 TEST-AUTH-NNN cases across unit/integration/contract/e2e/frontend-a11y/edge-security-performance layers, full traceability for all 5 SS-AUTH, 14 SY-AUTH, 15 TRD-AUTH, and 12 DS-AUTH requirements, all registered in manifest.traceability. Short hash: RpGiQeTfC2."
         }
       ]
     },
@@ -661,7 +677,7 @@
       "revision_history": [
         {
           "date": "2026-09-04",
-          "note": "First-author: AUTH Tasks drafted — 19 tickets (69 points) under milestone-04, all 42 TEST-AUTH-NNN IDs preserved in at least one task, all TRD contract gates (5a/5b/6a/API schema) passed without needing a contract-hardening task, registered in manifest.traceability with Task-as-child-of-Test links. Short hash: BEFKu4ngiM."
+          "note": "First-author: AUTH Tasks drafted \u2014 19 tickets (69 points) under milestone-04, all 42 TEST-AUTH-NNN IDs preserved in at least one task, all TRD contract gates (5a/5b/6a/API schema) passed without needing a contract-hardening task, registered in manifest.traceability with Task-as-child-of-Test links. Short hash: BEFKu4ngiM."
         },
         {
           "date": "2026-09-04",
